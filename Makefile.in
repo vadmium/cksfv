@@ -19,15 +19,15 @@
 BINDIR="{BINDIR}"
 MANDIR="{MANDIR}"
 
-all:
-	$(MAKE) -C src
+all:	
+	cd src && $(MAKE)
 
 install:	
 	mkdir -p $(BINDIR) $(MANDIR)
 	install src/cksfv $(BINDIR)
 	install cksfv.1 $(MANDIR)
 
-clean:
+clean:	
 	rm -f *.o *~ *.core core
 	rm -f rpm/*.o rpm/*~ rpm/*.core rpm/core
 	cd src && $(MAKE) clean

@@ -98,7 +98,7 @@ int crc32(int fd, uint32_t *main_val)
   char buf[BUFFERSIZE];
   char *p;
   int nr;
-  uint32_t crc = ~0, crc32_total = ~0;
+  uint32_t crc = ~0;
 
   while (1) {
     if ((nr = read(fd, buf, sizeof(buf))) < 0) {
@@ -108,10 +108,8 @@ int crc32(int fd, uint32_t *main_val)
     }
     if (nr == 0)
       break;
-    for (p = buf; nr--; ++p) {
+    for (p = buf; nr--; ++p)
       crc = (crc >> 8) ^ crctable[(crc ^ *p) & 0xff];
-      crc32_total = (crc >> 8) ^ crctable[(crc32_total ^ *p) & 0xff];
-    }
   }
   if (nr < 0)
     return 1;
