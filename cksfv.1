@@ -11,9 +11,16 @@ cksfv \- tests and creates simple file verification (SFV) listings
 Some files that you download will come with a .sfv file.
 .BR cksfv
 is used to
-verify that the files that you recieved are the same as the originals.
+verify that the files that you received are the same as the originals.
 cksfv is a program that can use the .sfv file to verify the downloaded
 files.  Also, it can be used to create new .sfv files.
+.PP
+.BR md5sum
+(1) or
+.BR sha1sum
+(1)
+is the suggested way of checksuming new files. cksfv should only
+be used for compatibility with other systems.
 
 .SH OPTIONS
 These options are available
