@@ -5,6 +5,7 @@
 	  NEW:
 	  ;   4395630592  14:54.37 2005-01-25 zeros
 	- lots of code cleanups
+	- solaris fixes
 	
 2005-01-25  Heikki Orsila  <heikki.orsila@iki.fi>
 	* no new version

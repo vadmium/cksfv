@@ -17,7 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 PROG=		cksfv
-CFLAGS2=	-Wall -Werror -O2 -g -D_LARGEFILE64_SOURCE -I. $(CFLAGS)
+CFLAGS2=	-Wall -O2 -g -D_LARGEFILE64_SOURCE -I. $(CFLAGS)
 SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
 
 $(PROG): $(SRCS)
