@@ -23,7 +23,7 @@ all:
 	cd src && $(MAKE)
 
 install:	
-	mkdir -p $(BINDIR) $(MANDIR)
+	mkdir -p $(BINDIR) $(MANDIR)/man1/
 	install src/cksfv $(BINDIR)
 	install cksfv.1 $(MANDIR)/man1/
 
