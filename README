@@ -8,7 +8,7 @@ already created SFV files.  Uses the crc32 checksum.
 Description
 ##############################################################################
 Some files that you download will come with a .sfv file.  This is used to
-verify that the files that you recieved are the same as the originals.
+verify that the files that you received are the same as the originals.
 cksfv is a program that can use the .sfv file to verify the downloaded
 files.  Also, it can be used to create new .sfv files.
 
@@ -39,7 +39,7 @@ If you are getting a lot of errors looking like this:
         README:         No such file or directory
         cksfv:          No such file or directory
         ------------------------------------------------------------
-        Errors Occured
+        Errors Occurred
 
 You might want to try using the -i flag.  This ignores case on filenames.
 Sometimes the .sfv file will have all the file names in uppercase and your
@@ -54,7 +54,17 @@ files will be all in lowercase.  This option will fix that problem.
         cksfv:          OK
         ------------------------------------------------------------
         Everything OK
-        
+
+If you do not want to check all files listed in an .sfv file, name the
+files you want checked on the command line:
+
+        $ cksfv -f new_files.sfv COPYING ChangeLog
+        --( Verifying file: new_files.sfv )-------------------------
+        COPYING:        OK
+        ChangeLog:      OK
+        ------------------------------------------------------------
+        Everything OK
+
 Now for creating your own .sfv files.  You can run the following command.
 
         $ cksfv * > mine.sfv
