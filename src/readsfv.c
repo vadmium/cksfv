@@ -192,7 +192,7 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
     if (rval == 0) {
       printf("--------------------------------------------------------------------------------\nEverything OK\a\n");
     } else {
-      printf("--------------------------------------------------------------------------------\nErrors Occured\a\n");
+      printf("--------------------------------------------------------------------------------\nErrors Occurred\a\n");
     }
   }
   return rval;

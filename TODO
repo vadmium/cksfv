@@ -19,9 +19,6 @@ bc:
 
 - Write a gtk version of the program.
 
-- Ability to check specific files by doing "cksfv -f test.sfv test1.file
-  test2.file".
-
 shd:
 - fix rpm creation
 
