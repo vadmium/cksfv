@@ -1,5 +1,5 @@
 2005-01-25  Heikki Orsila  <heikki.orsila@iki.fi>
-        - Added and edited man page from Debian distribution
+        - Man page from Debian distribution
 	- Fixed Makefile issues for -jx
 	- Added a simple configure script for more consistent compilation
 	- Removed b0rken rpm creation from Makefile
