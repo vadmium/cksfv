@@ -3,6 +3,8 @@
 version="1.3.3"
 prefix=/usr/local
 packageprefix=""
+compiler="gcc"
+have_mandir="no"
 
 for opt in "$@" ; do
 	case $opt in
@@ -12,14 +14,25 @@ for opt in "$@" ; do
 	--package-prefix=*)
 		packageprefix=`echo $opt | sed -n 's|--package-prefix=\(.*\)|\1|p'`
 		;;
-	*)
-		echo "configure parameter error"
+	--mandir=*)
+		mandir=`echo $opt | sed -n 's|--mandir=\(.*\)|\1|p'`
+		have_mandir="yes"
+		;;
+	--compiler=*)
+		compiler=`echo $opt | sed -n 's|--compiler=\(.*\)|\1|p'`
+		;;
+	--help)
 		echo ""
 		echo "valid options are:"
 		echo "--prefix dir           install to prefix 'dir'"
  		echo "--package-prefix dest  pretend to install to the prefix,"
 		echo "                       but copy files to 'dest/prefix' on make install"
+		echo "--mandir dir           install man page to 'dir' (PREFIX/share/man/man1/)"
+		echo "--compiler program     compile with 'program' (gcc)"
 		exit
+		;;
+        *)
+		echo "unknown configure argument:" "$opt" "(ignoring)"
 		;;
 	esac
 done
@@ -29,11 +42,19 @@ if test -n "$packageprefix" ; then
 fi
 
 bindir="$packageprefix$prefix/bin"
-mandir="$packageprefix$prefix/share/man/man1"
+if test "$have_mandir" = "no" ; then
+    mandir="$prefix/share/man/man1"
+else
+    mandir="$packageprefix$mandir"
+fi
 
 sed -e "s|{BINDIR}|$bindir|g" \
     -e "s|{MANDIR}|$mandir|g" \
     < Makefile.in > Makefile
+
+sed -e "s|{CC}|$compiler|" \
+    -e "s|{CFLAGS}|$CFLAGS|" \
+    < src/Makefile.in > src/Makefile
 
 echo "" > "src/config.h"
 echo "#ifndef CKSFV_CONFIG_H" >> "src/config.h"
@@ -64,6 +85,7 @@ echo "  prefix directory:          $prefix"
 echo "  package prefix:            $packageprefix"
 echo "  binary directory:          $bindir"
 echo "  man directory:             $mandir"
+echo "  compiler:                  $compiler"
 echo "  has stdint.h:              $has_stdint"
 echo ""
 echo "configure succesful."
