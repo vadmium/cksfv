@@ -72,9 +72,7 @@ void prsfv_head(char *fn)
 {
   char          head[81], *p;
   int           len;
-
-  /* this is b0rken. assumes terminal and filename widths. however, this
-     won't cause the program to fail in the real purpose */
+  
   snprintf(head, 80, "--( Verifying: %s", fn);
   len = strlen(head);
   if (len < 76) {
