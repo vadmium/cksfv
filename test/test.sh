@@ -97,8 +97,8 @@ if test "$?" != "0" ; then
 fi
 echo test case 10 successful
 
-ln -sfn ../dir4 dir1/link
-ln -sfn ../dir3 dir2/link
+ln -sfn ../dir4 dir1/link 2> /dev/null
+ln -sfn ../dir3 dir2/link 2> /dev/null
 
 # test case 11 (recursive without symlinks, successful)
 $cksfv -C dir1 -r > /dev/null 2> /dev/null
@@ -118,7 +118,7 @@ echo test case 12 successful
 
 # test case 13 (recursive with symlinks, unsuccessful)
 $cksfv -C dir1 -r -L > /dev/null 2> /dev/null
-if test "$?" == "0" ; then
+if test "$?" = "0" ; then
     echo "test case 13 unsuccessful. should report correct checksum."
     exit -1
 fi
