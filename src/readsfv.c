@@ -68,76 +68,81 @@ int readsfv(char *fn, char *dir, int nocase)
 
   while (fgets(buf, sizeof(buf), fd)) {
     /* comment in the sfv file ignore */
-    if (buf[0] != ';' && buf[0] != '\n' && buf[0] != '\r') { 
-      /* build filename and crc from the sfv file */
-      if ((end = strrchr(buf, ' ')) == NULL) {
-        fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
-        exit(1);
-      }
-      ind = ((intptr_t) end) - ((intptr_t) buf);
-      if ((ind + 9) >= ((int) strlen(buf))) {
-	fprintf(stderr, "too short a line\n");
-	exit(1);
-      }
-      /* check that it's exactly 8 hexadigits */
-      for (j = 1; j < 9; j++) {
-	if (!isxdigit(buf[ind + j])) {
-	  fprintf(stderr, "cksfv: illegal checksum: %s\n", &buf[ind + 1]);
-	  exit(1);
-	}
-      }
-      buf[ind] = '\0'; /* zero between filename and checksum */
-      buf[ind + 9] = '\0'; /* zero after checksum */
-      sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
+    if (buf[0] == ';' || buf[0] == '\n' || buf[0] == '\r')
+      continue;
 
-      filename = buf;
-      if (strlen(filename) >= PATH_MAX) {
-	fprintf(stderr, "cksfv: filename too long\n");
-	exit(1);
-      }
-
-      if (quiet == 0)
-        fprintf(stderr, "%-49s ", filename);
-
-      /* can we open the file */
-      if ((file = open(filename, O_RDONLY, 0)) < 0) {
-        if (nocase == 1) {
-          /* try to search for it if ingore case is set */
-          find_file(filename, dir);
-          file = open(filename, O_RDONLY, 0);
-        }
-      }
-
-      /* if the file could not be opened */
-      if (file < 0) {
-        if (quiet == 0)
-          fprintf(stderr, "%s\n", strerror(errno));
-        else if (quiet == 1)
-          fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
-        rval = 1;
-        continue;
-      }
-      
-      if (crc32(file, &val, &len)) {
-        if (quiet == 0)
-          fprintf(stderr, "%s\n", strerror(errno));
-        else if (quiet == 1)
-          fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
-        rval = 1;
-      } else {
-        if (val != sfvcrc) {
-          if (quiet == 0)
-            fprintf(stderr, "different CRC\n");
-          else if (quiet == 1)
-            fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
-          rval = 1;
-        } else
-          if (quiet == 0) {
-            fprintf(stderr, "OK\n");
-          }
-      }
-      close(file);
+    /* build filename and crc from the sfv file */
+    if ((end = strrchr(buf, ' ')) == NULL) {
+      fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
+      exit(1);
     }
+    ind = ((intptr_t) end) - ((intptr_t) buf);
+    if (ind >= PATH_MAX) {
+      fprintf(stderr, "cksfv: too long a name\n");
+      exit(1);
+    }
+    if ((ind + 9) >= ((intptr_t) strlen(buf))) {
+      fprintf(stderr, "cksfv: too short a line (checksum missing)\n");
+      exit(1);
+    }
+    /* check that it's exactly 8 hexadigits */
+    for (j = 1; j < 9; j++) {
+      if (!isxdigit(buf[ind + j])) {
+	fprintf(stderr, "cksfv: illegal checksum (should only contain hexdigits): %s\n", &buf[ind + 1]);
+	exit(1);
+      }
+    }
+    buf[ind] = '\0'; /* zero between filename and checksum */
+    buf[ind + 9] = '\0'; /* zero after checksum */
+    sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
+    
+    filename = buf;
+    if (strlen(filename) >= PATH_MAX) {
+      fprintf(stderr, "cksfv: filename too long\n");
+      exit(1);
+    }
+    
+    if (quiet == 0)
+      fprintf(stderr, "%-49s ", filename);
+
+    /* can we open the file */
+    if ((file = open(filename, O_RDONLY | O_LARGEFILE, 0)) < 0) {
+      if (nocase == 1) {
+	/* try to search for it if ingore case is set */
+	find_file(filename, dir);
+	file = open(filename, O_RDONLY | O_LARGEFILE, 0);
+      }
+    }
+
+    /* if the file could not be opened */
+    if (file < 0) {
+      if (quiet == 0)
+	fprintf(stderr, "%s\n", strerror(errno));
+      else if (quiet == 1)
+	fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
+      rval = 1;
+      continue;
+    }
+      
+    if (crc32(file, &val, &len)) {
+      if (quiet == 0)
+	fprintf(stderr, "%s\n", strerror(errno));
+      else if (quiet == 1)
+	fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
+      rval = 1;
+    } else {
+      if (val != sfvcrc) {
+	if (quiet == 0)
+	  fprintf(stderr, "different CRC\n");
+	else if (quiet == 1)
+	  fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
+	rval = 1;
+      } else
+	if (quiet == 0) {
+	  fprintf(stderr, "OK\n");
+	}
+    }
+    close(file);
   }
   fclose(fd);
 
