@@ -1,10 +1,20 @@
+2005-01-26  Heikki Orsila  <heikki.orsila@iki.fi>
+	- fixed output (displayed only 32-bit file sizes, and months wrong)
+	  OLD:
+	  ;    100663296  14:54.37 2005-00-25 zeros
+	  NEW:
+	  ;   4395630592  14:54.37 2005-01-25 zeros
+
 2005-01-25  Heikki Orsila  <heikki.orsila@iki.fi>
+	* no new version
         - Added and edited man page from Debian distribution
 	- Fixed Makefile issues for -jx
 	- Added a simple configure script for more consistent compilation
 	- Removed b0rken rpm creation from Makefile
 	- Removed spam messages (when creating and verifying checksums)
 	- Added test cases (make tests)
+	- added fake and lousy stdint.h generation (OS that don't have it
+	  should be upgraded)
 
 2005-01-24  Heikki Orsila  <heikki.orsila@iki.fi>
         * no new version

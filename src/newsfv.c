@@ -27,7 +27,7 @@
 #include <stdint.h>
 
 extern void pnsfv_head();
-extern void pfileinfo(char**);
+extern void pfileinfo(char **);
 extern void pcrc(char *fn, uint32_t val);
 extern int crc32(int fd, uint32_t *val, uint64_t *len);
 
