@@ -58,8 +58,18 @@ fi
 echo test case 6 succesful
 
 # tset case 7 (checksum code with illegal characters)
-$cksfv -f c4.sfv
+$cksfv -f c4.sfv &> /dev/null
+if test "$?" = "0" ; then
+    echo "test case 7 unsuccesful."
+    exit -1
+fi
+echo test case 7 succesful
 
 # tset case 8 (checksum code with one too few characters)
-$cksfv -f c5.sfv
+$cksfv -f c5.sfv &> /dev/null
+if test "$?" = "0" ; then
+    echo "test case 8 unsuccesful."
+    exit -1
+fi
+echo test case 8 succesful
 

@@ -28,6 +28,7 @@
 #include <ctype.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <limits.h>
 
 extern int crc32(int fd, uint32_t *main_val, uint64_t *main_len);
 extern void prsfv_head(char*);
@@ -37,14 +38,17 @@ int find_file(char*, char*);
 extern int  quiet;
 int readsfv(char *fn, char *dir, int nocase)
 {
-  FILE          *fd;
-  char          buf[512], *end, filename[512], crc[9], path[256];
-  int           file, rval = 0;
+  FILE *fd;
+  char buf[PATH_MAX + 256];
+  char *filename;
+  char *end;
+  int file, rval = 0;
   uint64_t len;
   uint32_t sfvcrc;
   uint32_t val;
+  int ind;
+  int j;
 
-  
   if (quiet == 0) {
     prsfv_head(fn);
   }
@@ -61,26 +65,39 @@ int readsfv(char *fn, char *dir, int nocase)
       fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
     exit(1);
   }
-  
-  while(fgets(buf, 512, fd)) {
+
+  while (fgets(buf, sizeof(buf), fd)) {
     /* comment in the sfv file ignore */
     if (buf[0] != ';' && buf[0] != '\n' && buf[0] != '\r') { 
       /* build filename and crc from the sfv file */
-      end = strrchr(buf, ' ');
-      if (end == NULL) {
+      if ((end = strrchr(buf, ' ')) == NULL) {
         fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
         exit(1);
       }
-      *end = '\0';
-      *(end+9) = '\0';
-      strncpy(crc, ++end, 9);
-      strncpy(filename, buf, 512);
-      sfvcrc = strtoul(crc, '\0', 16);
+      ind = ((intptr_t) end) - ((intptr_t) buf);
+      if ((ind + 9) >= ((int) strlen(buf))) {
+	fprintf(stderr, "too short a line\n");
+	exit(1);
+      }
+      /* check that it's exactly 8 hexadigits */
+      for (j = 1; j < 9; j++) {
+	if (!isxdigit(buf[ind + j])) {
+	  fprintf(stderr, "cksfv: illegal checksum: %s\n", &buf[ind + 1]);
+	  exit(1);
+	}
+      }
+      buf[ind] = '\0'; /* zero between filename and checksum */
+      buf[ind + 9] = '\0'; /* zero after checksum */
+      sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
+
+      filename = buf;
+      if (strlen(filename) >= PATH_MAX) {
+	fprintf(stderr, "cksfv: filename too long\n");
+	exit(1);
+      }
 
       if (quiet == 0)
         fprintf(stderr, "%-49s ", filename);
-      
-      snprintf(path, 256, "%s/%s", dir, filename);
 
       /* can we open the file */
       if ((file = open(filename, O_RDONLY, 0)) < 0) {
@@ -132,7 +149,7 @@ int readsfv(char *fn, char *dir, int nocase)
     }
   }
 
-  return(rval);
+  return rval;
 }
 
 
