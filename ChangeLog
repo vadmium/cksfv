@@ -1,8 +1,11 @@
-2005-03-04  Heikki Orsila <heikki.orsila@iki.fi>
+2005-02-06  Heikki Orsila <heikki.orsila@iki.fi>
+        - 'make check' executes tests. 'make tests' doesn't.
+
+2005-02-04  Heikki Orsila <heikki.orsila@iki.fi>
 	* version 1.3.3
 	- lots of changes. see previous changelog entries.
 
-2005-03-04  Heikki Orsila <heikki.orsila@iki.fi>
+2005-02-04  Heikki Orsila <heikki.orsila@iki.fi>
         - configure script now ignore unknown arguments (but gives a warning)
 	- configure allows setting mandir and compiler. Examples:
 	  --mandir=/usr/man
@@ -11,7 +14,7 @@
 	- -b option: print only basenames of the given files when creating
 	  an sfv.
 
-2005-03-03  Heikki Orsila <heikki.orsila@iki.fi>
+2005-02-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- fixed O_LARGEFILE for macosx
 	- Thomas Klausner submitted partial sfv checking patch by Dieter Baron
 	  <dillo@giga.or.at>. Now
