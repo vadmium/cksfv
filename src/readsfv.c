@@ -192,7 +192,5 @@ static int find_file(char* filename, char* dir)
       
   }
   rewinddir(dirp);
-
-  
   return 1;
 }
