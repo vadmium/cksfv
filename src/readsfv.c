@@ -55,6 +55,7 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
   int ind;
   int j;
   int check;
+  struct stat st;
 
   if (be_quiet == 0)
     prsfv_head(fn);
@@ -153,6 +154,17 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
       continue;
     }
 
+    if (fstat(file, &st)) {
+      fprintf(stderr, "cksfv: can not fstat %s: %s\n", filename, strerror(errno));
+      rval = 1;
+      goto next;
+    }
+    if (S_ISDIR(st.st_mode)) {
+      fprintf(stderr, "cksfv: %s: Is a directory\n", filename);
+      rval = 1;
+      goto next;
+    }
+
     if (crc32(file, &val)) {
       if (be_quiet == 0)
 	fprintf(stderr, "%s\n", strerror(errno));
@@ -170,6 +182,7 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 	if (be_quiet == 0)
 	  fprintf(stderr, "OK\n");
     }
+  next:
     close(file);
   }
   fclose(fd);
