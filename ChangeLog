@@ -5,7 +5,7 @@
 2005-03-04  Heikki Orsila <heikki.orsila@iki.fi>
         - configure script now ignore unknown arguments (but gives a warning)
 	- configure allows setting mandir and compiler. Examples:
-	  --mandir=/usr/man/man1
+	  --mandir=/usr/man
 	  --compiler=/opt/experimental/gcc-4/bin/gcc
 	- fixed wording in man file (Thomas Klausner)
 	- -b option: print only basenames of the given files when creating

@@ -25,7 +25,7 @@ all:
 install:	
 	mkdir -p $(BINDIR) $(MANDIR)
 	install src/cksfv $(BINDIR)
-	install cksfv.1 $(MANDIR)
+	install cksfv.1 $(MANDIR)/man1/
 
 clean:	
 	rm -f *.o *~ *.core core

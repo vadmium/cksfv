@@ -33,7 +33,7 @@ for opt in "$@" ; do
  		echo "--package-prefix dest  pretend to install to the prefix,"
 		echo "                       but copy files to 'dest/prefix' on make install"
 		echo "--bindir dir           install program to 'dir' (PREFIX/bin/)"
-		echo "--mandir dir           install man page to 'dir' (PREFIX/share/man/man1/)"
+		echo "--mandir dir           install man page to 'dir' (PREFIX/share/man/)"
 		echo "--compiler program     compile with 'program' (gcc)"
 		exit
 		;;
