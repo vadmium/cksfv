@@ -8,15 +8,9 @@ cksfv \- tests and creates simple file verification (SFV) listings
 .I "[-iq] [-C directory] [-f file.sfv] [file ...]"
 .br
 .SH "DESCRIPTION"
-This manual page documents briefly the
+Some files that you download will come with a .sfv file.
 .BR cksfv
-command.
-This manual page was written for the Debian GNU/Linux distribution
-because the original program does not have a manual page. Most of
-the text is cut'n'pasted from the README information shipped with
-the software.
-.PP
-Some files that you download will come with a .sfv file.  This is used to
+is used to
 verify that the files that you recieved are the same as the originals.
 cksfv is a program that can use the .sfv file to verify the downloaded
 files.  Also, it can be used to create new .sfv files.
@@ -38,7 +32,32 @@ quiet, only prints error messages
 .TP
 .B \-v
 verbose, by default this option is on
+
+.SH EXAMPLES
+.nf
+Check checksums of files listed in 'files.sfv':
+.ft B
+cksfv -f files.sfv
+
+.ft R
+Create checksums for a bunch of files:
+.ft B
+cksfv *.gz > files.sfv
+
+.ft R
+Check checksum of case-insensitive filenames listed in 'files.sfv'.
+This is sometimes useful with files created by operating systems
+that have case-insensitive filesystem names.
+.ft B
+cksfv -i -f files.sfv
+
 .SH "SEE ALSO"
+.BR md5sum (1)
+
+.SH FILES
+Only the program binary.
+
 .SH AUTHOR
 This manual page was written by Stefan Alfredsson <stefan@alfredsson.org>,
-for the Debian GNU/Linux system (but may be used by others).
+for the Debian GNU/Linux system (but may be used by others). It was later
+modified by Heikki Orsila <heikki.orsila@iki.fi>.
