@@ -1,0 +1,22 @@
+- Add the ability to have a comments file when creating .sfv files.
+
+- Use automake for the build.
+
+- Create a better webpage with some documentation.
+
+- Man page for the program.
+
+- Better README this will have to be a constant upgrade.
+
+- Make verbose by default a compile time option.
+
+- Option to recurse subdirectories.
+
+- More meaningfull exit values.
+
+- Show an estimated time to complete checks and the creation of new sfv files.
+
+- Write a gtk version of the program.
+
+- Ability to check specific files by doing "cksfv -f test.sfv test1.file
+  test2.file".

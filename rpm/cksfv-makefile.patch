@@ -1,0 +1,11 @@
+--- src/Makefile.orig	Mon May 22 14:30:58 2000
++++ src/Makefile	Mon May 22 14:31:05 2000
+@@ -24,7 +24,7 @@
+ 	gcc $(CFLAGS) -o $(PROG) $(SRCS)
+ 
+ install: cksfv
+-	cp $(PROG) /usr/local/bin
++	cp $(PROG) /usr/bin
+ 
+ clean:
+ 	rm -f *.o *~ *.core $(PROG)

@@ -78,3 +78,9 @@ It will create a create a file that looks like:
 
 Right now the files can only be access via http at
 http://www.fodder.org/cksfv/.  I have a tarball and RPMs there.
+
+NOTE from Heikki Orsila <heikki.orsila@iki.fi>. It seems Bryan Call has
+gone underground. New versions (mainly bug fixes) of the program can be
+obtained from:
+
+	http://www.iki.fi/shd/foss/cksfv/

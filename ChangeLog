@@ -1,7 +1,12 @@
+2005-01-24  Heikki Orsila  <heikki.orsila@iki.fi>
+        * no new version
+	- I decided to start maintaining the program since Bryan Call is
+	  unreachable.
+
 2004-05-25  Heikki Orsila  <heikki.orsila@iki.fi>
         * version 1.3.1
-	- Fixed 64-bit issues
-	
+	- Fixed 64-bit issues. Went into Gentoo portage.
+
 2000-12-28  Bryan Call  <bc@fodder.org>
 
 	* version 1.3
