@@ -6,8 +6,10 @@
 extern int use_basename;
 extern int be_quiet;
 extern int be_caseinsensitive;
+extern int recursive;
 
 int readsfv(char *filename, char *dir, int argc, char **argv);
+int recursivereadsfv(char *dir, int follow, int argc, char **argv);
 int newsfv(char **);
 void pusage(void);
 

@@ -128,6 +128,8 @@ void pusage()
   printf(" -f\t.sfv file to verify\n");
   printf(" -i\tignore case on filenames\n");
   printf(" -q\tquiet, only prints error messages\n");
+  printf(" -r\trecursively check .sfv files in subdirectories\n");
+  printf(" -L\tfollow symlinks in recursive mode\n");
   printf(" -v\tverbose, by default this option is on\n");
   exit(1);
-}  
+}

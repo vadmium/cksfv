@@ -33,14 +33,16 @@
 int use_basename = 0;
 int be_quiet = 0;
 int be_caseinsensitive = 0;
+int recurse = 0;
 
 int main(int argc, char *argv[])
 {
   int   ch, rval;
   int   rsfvflag = 0;
   char  dir[PATH_MAX + 1] = ".", sfvfile[PATH_MAX + 1];
+  int follow = 0;
 
-  while ((ch = getopt(argc, argv, "iC:f:qvb")) != -1)
+  while ((ch = getopt(argc, argv, "iC:f:qvbrL")) != -1)
     switch (ch) {
     case 'i':
       be_caseinsensitive = 1;
@@ -54,6 +56,9 @@ int main(int argc, char *argv[])
       sfvfile[sizeof(sfvfile) - 1] = 0;
       rsfvflag = 1;
       break;
+    case 'L':
+      follow = 1;
+      break;
     case 'q':
       be_quiet++;
       break;
@@ -63,6 +68,10 @@ int main(int argc, char *argv[])
     case 'b':
       use_basename = 1;
       break;
+    case 'r':
+      recurse = 1;
+      rsfvflag = 1;
+      break;
     case '?':
     default:
       pusage();
@@ -71,7 +80,10 @@ int main(int argc, char *argv[])
   argv += optind;
 
   if (rsfvflag == 1) {
-    rval = readsfv(sfvfile, dir, argc, argv);
+    if (recurse == 1)
+      rval = recursivereadsfv(dir, follow, argc, argv);
+    else
+      rval = readsfv(sfvfile, dir, argc, argv);
   } else {
     if (argc < 1) {
       pusage();

@@ -64,13 +64,13 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
   if (fd == NULL) {
     if (!TOTALLY_QUIET)
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
-    exit(1);
+    return 1;
   }
 
   if (chdir(dir) != 0) {
     if (!TOTALLY_QUIET)
       fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
-    exit(1);
+    goto error;
   }
 
   while (fgets(buf, sizeof(buf), fd)) {
@@ -82,32 +82,32 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
     if ((end = strrchr(buf, ' ')) == NULL) {
       if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
-      exit(1);
+      goto error;
     }
     ind = ((intptr_t) end) - ((intptr_t) buf);
     if (ind >= PATH_MAX) {
       if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: too long a name\n");
-      exit(1);
+      goto error;
     }
     if ((ind + 9) >= ((intptr_t) strlen(buf))) {
       if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: too short a line (checksum missing)\n");
-      exit(1);
+      goto error;
     }
     /* check that it's exactly 8 hexadigits */
     for (j = 1; j < 9; j++) {
       if (!isxdigit(((int) buf[ind + j]))) {
 	if (!TOTALLY_QUIET)
 	  fprintf(stderr, "cksfv: illegal checksum (should only contain hexdigits): %s\n", &buf[ind + 1]);
-	exit(1);
+	goto error;
       }
     }
     /* must be followed by a whitespace char */
     if (!isspace((int) buf[ind + 9])) {
       if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: too long a checksum: %s\n", &buf[ind + 1]);
-      exit(1);
+      goto error;
     }
 
     buf[ind] = '\0'; /* zero between filename and checksum */
@@ -135,7 +135,8 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
     if (strlen(filename) >= PATH_MAX) {
       if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: filename too long\n");
-      exit(1);
+      rval = 1;
+      continue;
     }
 
     if (!QUIET)
@@ -199,6 +200,7 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
   next:
     close(file);
   }
+
   fclose(fd);
 
   if (argc) {
@@ -222,6 +224,10 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
     }
   }
   return rval;
+
+ error:
+  fclose(fd);
+  return 1;
 }
 
 
@@ -263,4 +269,105 @@ static int find_file(char *filename, char *dir)
   }
   rewinddir(dirp);
   return 1;
+}
+
+
+int recursivereadsfv(char *dir, int follow, int argc, char **argv)
+{
+  DIR *dirp;
+  struct dirent *dirinfo;
+  char cwd[PATH_MAX+1];
+  struct stat dirstat;
+  int ret;
+  int finalret = 0;
+
+  if (!getcwd(cwd, sizeof(cwd))) {
+    if (!QUIET) {
+      fprintf(stderr, "getcwd:\n");
+    } else if (!TOTALLY_QUIET) {
+      fprintf(stderr, "getcwd: %s\n", strerror(errno));
+    }
+    return 1;
+  }
+  
+  if (dir && strcmp(dir, ".") != 0) {
+    if (chdir(dir) == -1) {
+      if (!QUIET) {
+        fprintf(stderr, "chdir:\n");
+      } else if (!TOTALLY_QUIET) {
+        fprintf(stderr, "cksfv: cannot chdir to %s: %s\n", dir, strerror(errno));
+      }
+      return 1;
+    }
+  }
+  
+  dirp = opendir(".");
+  
+  if (dirp == NULL) {
+    if (!QUIET) {
+      fprintf(stderr, "%s", strerror(errno));
+    } else if (!TOTALLY_QUIET) {
+      fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
+    }
+    return 1;
+  }
+  
+  while ((dirinfo = readdir(dirp)) != NULL) {
+    if (strcmp(dirinfo->d_name, ".") == 0)
+      continue;
+    if (strcmp(dirinfo->d_name, "..") == 0)
+      continue;
+
+    if (follow)
+      ret = stat(dirinfo->d_name, &dirstat);
+    else
+      ret = lstat(dirinfo->d_name, &dirstat);
+
+    if (ret == -1) {
+      if (!QUIET) {
+        fprintf(stderr, "cannot fstat\n");
+      } else if (!TOTALLY_QUIET) {
+        fprintf(stderr, "cksfv: cannot stat %s: %s\n", dirinfo->d_name, strerror(errno));
+      }
+      closedir(dirp);
+      return 1;
+    }
+    
+    if (S_ISDIR(dirstat.st_mode)) {
+      if (recursivereadsfv(dirinfo->d_name, follow, argc, argv))
+	finalret = 1;
+    }
+    else if (S_ISREG(dirstat.st_mode) && (strcasecmp(dirinfo->d_name + strlen(dirinfo->d_name) - 4, ".sfv") == 0)) {
+       char processdir[PATH_MAX+1];
+
+       if (!getcwd(processdir, sizeof(processdir))) {
+         if (!QUIET) {
+	   fprintf(stderr, "getcwd:\n");
+	 } else if (!TOTALLY_QUIET) {
+	   fprintf(stderr, "getcwd: %s\n", strerror(errno));
+	 }
+	 closedir(dirp);
+	 return 1;
+       }
+
+       if (!QUIET)
+	 fprintf(stderr, "Entering directory: %s\n", cwd);
+
+       if (readsfv(dirinfo->d_name, processdir, argc, argv))
+	 finalret = 1;
+    }
+  }
+  
+  if (chdir(cwd) == -1) {
+    if (!QUIET) {
+      fprintf(stderr, "chdir:\n");
+    } else if (!TOTALLY_QUIET) {
+      fprintf(stderr, "cksfv: cannot chdir to %s: %s\n", cwd, strerror(errno));
+    }
+    return 1;
+  }
+    
+  closedir(dirp);
+  
+  return finalret;
 }
