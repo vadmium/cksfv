@@ -25,16 +25,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include "cksfv.h"
 #include "config.h"
 
 #ifndef O_LARGEFILE
 #define O_LARGEFILE (0)
 #endif
-
-extern void pnsfv_head();
-extern void pfileinfo(char **);
-extern void pcrc(char *fn, uint32_t val);
-extern int crc32(int fd, uint32_t *val);
 
 int newsfv(char **argv)
 {

@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "cksfv.h"
 #include "config.h"
 
 #ifndef PATH_MAX
@@ -39,13 +40,10 @@
 #define O_LARGEFILE (0)
 #endif
 
-extern int crc32(int fd, uint32_t *val);
-extern void prsfv_head(char *fn);
-
-static int find_file(char *filename, char *dir, int quiet);
+static int find_file(char *filename, char *dir);
 
 
-int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
+int readsfv(char *fn, char *dir, int argc, char **argv)
 {
   FILE *fd;
   char buf[PATH_MAX + 256]; /* enough for name and checksum */
@@ -58,18 +56,18 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
   int j;
   int check;
 
-  if (quiet == 0)
+  if (be_quiet == 0)
     prsfv_head(fn);
 
   fd = fopen(fn, "r");
   if (fd == NULL) {
-    if (quiet != 2)
+    if (be_quiet != 2)
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
     exit(1);
   }
 
   if (chdir(dir) != 0) {
-    if (quiet != 2)
+    if (be_quiet != 2)
       fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
     exit(1);
   }
@@ -117,8 +115,8 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
       for (j = 0; j < argc; j++) {
 	if (argv[j] == NULL)
 	  continue;
-	if ((nocase != 0 && strcasecmp(argv[j], filename) == 0) ||
-	    (nocase == 0 && strcmp(argv[j], filename) == 0)) {
+	if ((be_caseinsensitive != 0 && strcasecmp(argv[j], filename) == 0) ||
+	    (be_caseinsensitive == 0 && strcmp(argv[j], filename) == 0)) {
 	  check = 1;
 	  argv[j] = NULL;
 	  break;
@@ -133,43 +131,43 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
       exit(1);
     }
 
-    if (quiet == 0)
+    if (be_quiet == 0)
       fprintf(stderr, "%-49s ", filename);
 
     /* can we open the file */
     if ((file = open(filename, O_RDONLY | O_LARGEFILE, 0)) < 0) {
-      if (nocase == 1) {
+      if (be_caseinsensitive == 1) {
 	/* try to search for it if ingore case is set */
-	find_file(filename, dir, quiet);
+	find_file(filename, dir);
 	file = open(filename, O_RDONLY | O_LARGEFILE, 0);
       }
     }
 
     /* if the file could not be opened */
     if (file < 0) {
-      if (quiet == 0)
+      if (be_quiet == 0)
 	fprintf(stderr, "%s\n", strerror(errno));
-      else if (quiet == 1)
+      else if (be_quiet == 1)
 	fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
       rval = 1;
       continue;
     }
 
     if (crc32(file, &val)) {
-      if (quiet == 0)
+      if (be_quiet == 0)
 	fprintf(stderr, "%s\n", strerror(errno));
-      else if (quiet == 1)
+      else if (be_quiet == 1)
 	fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
       rval = 1;
     } else {
       if (val != sfvcrc) {
-	if (quiet == 0)
+	if (be_quiet == 0)
 	  fprintf(stderr, "different CRC\n");
-	else if (quiet == 1)
+	else if (be_quiet == 1)
 	  fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
 	rval = 1;
       } else
-	if (quiet == 0)
+	if (be_quiet == 0)
 	  fprintf(stderr, "OK\n");
     }
     close(file);
@@ -179,7 +177,7 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
   if (argc) {
     for (j = 0; j < argc; j++) {
       if (argv[j]) {
-        if (quiet == 0)
+        if (be_quiet == 0)
           fprintf(stderr, "%-49s not found in sfv\n", argv[j]);
 	else
 	  fprintf(stderr, "cksfv: %s: not found in sfv\n", argv[j]);
@@ -188,7 +186,7 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
     }
   }
 
-  if (quiet == 0) {
+  if (be_quiet == 0) {
     if (rval == 0) {
       printf("--------------------------------------------------------------------------------\nEverything OK\a\n");
     } else {
@@ -199,7 +197,7 @@ int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
 }
 
 
-static int find_file(char *filename, char *dir, int quiet)
+static int find_file(char *filename, char *dir)
 {
   DIR *dirp;
   struct dirent *dirinfo;
@@ -208,7 +206,7 @@ static int find_file(char *filename, char *dir, int quiet)
 
   dirp = opendir(".");
   if (dirp == NULL) {
-    if (quiet != 2)
+    if (be_quiet != 2)
       fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
     return(0);
   }

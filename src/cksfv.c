@@ -23,25 +23,27 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "cksfv.h"
+
 #ifndef PATH_MAX
 #define PATH_MAX (512)
 #endif
 
-extern int  readsfv(char *filename, char *dir, int nocase, int quiet, int argc, char **argv);
-extern int  newsfv(char **);
-extern void pusage();
+/* config variables for other modules */
+int use_basename = 0;
+int be_quiet = 0;
+int be_caseinsensitive = 0;
 
 int main(int argc, char *argv[])
 {
   int   ch, rval;
-  int   nocase = 0, rsfvflag = 0;
+  int   rsfvflag = 0;
   char  dir[PATH_MAX + 1] = ".", sfvfile[PATH_MAX + 1];
-  int   quiet = 0;
 
-  while ((ch = getopt(argc, argv, "iC:f:qv")) != -1)
+  while ((ch = getopt(argc, argv, "iC:f:qvb")) != -1)
     switch (ch) {
     case 'i':
-      nocase = 1;
+      be_caseinsensitive = 1;
       break;
     case 'C':
       strncpy(dir, optarg, sizeof(dir));
@@ -53,10 +55,13 @@ int main(int argc, char *argv[])
       rsfvflag = 1;
       break;
     case 'q':
-      quiet++;
+      be_quiet++;
       break;
     case 'v':
-      quiet = 0;
+      be_quiet = 0;
+      break;
+    case 'b':
+      use_basename = 1;
       break;
     case '?':
     default:
@@ -66,7 +71,7 @@ int main(int argc, char *argv[])
   argv += optind;
 
   if (rsfvflag == 1) {
-    rval = readsfv(sfvfile, dir, nocase, quiet, argc, argv);
+    rval = readsfv(sfvfile, dir, argc, argv);
   } else {
     if (argc < 1) {
       pusage();
