@@ -32,3 +32,6 @@ clean:
 	rm -f *.o *~ *.core core
 	rm -f rpm/*.o rpm/*~ rpm/*.core rpm/core
 	cd src && $(MAKE) clean
+
+tests:	
+	cd test && ./test.sh
