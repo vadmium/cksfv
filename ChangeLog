@@ -1,3 +1,13 @@
+2000-12-28  Bryan Call  <bc@fodder.org>
+
+	* version 1.2
+	- Fixed the a problem when making a new sfv it was not being zero
+	padded (found by Justin Head and Andre Tertling).
+	- Added the idea, when insensitive matching is activated, it will treat
+	"_" and " " equal. For example it will treat "foo_bar.txt" and
+	"Foo Bar.txt" the same (suggested and patch given by Andree Borrmann).
+	- Made it so it will not choke on blank lines.
+	
 2000-05-18  Bryan Call  <bc@fodder.org>
 
 	* version 1.1

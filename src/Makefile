@@ -17,14 +17,14 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 PROG=		cksfv
-CFLAGS+=	-Wall -Werror -O2
+CFLAGS+=	-Wall -Werror -O2 -g
 SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
 
 cksfv: $(SRCS)
-	gcc $(CFLAGS) -o $(PROG) $(SRCS)
+	gcc -DVERSION=\"$(VERSION)\" $(CFLAGS) -o $(PROG) $(SRCS)
 
 install: cksfv
 	cp $(PROG) /usr/local/bin
 
 clean:
-	rm -f *.o *~ *.core $(PROG)
+	rm -f *.o *~ *.core core $(PROG)

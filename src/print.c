@@ -22,7 +22,6 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
-#include "cksfv.h"
 
 void pnsfv_head()
 {
@@ -61,7 +60,7 @@ void pfileinfo(char **argv)
 
 void pcrc(char *fn, unsigned long val)
 {
-  printf("%s %lX\n", fn, val);
+  printf("%s %.8lX\n", fn, val);
 }
 
 void prsfv_head(char *fn)

@@ -16,26 +16,43 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+VERSION="1.2"
+
 all:
-	cd src && gmake
+	cd src && gmake VERSION=$(VERSION)
 
 install:
-	cd src && gmake install
+	cd src && gmake VERSION=$(VERSION) install
 
 dist:
 	gmake clean
-	rm -rf ~/cksfv-1.1 && \
-	cp -r . ~/cksfv-1.1 && cd ~ && rm -rf cksfv-1.1/CVS \
-	&& rm -rf cksfv-1.1/src/CVS && tar cf cksfv-1.1.tar cksfv-1.1 \
-	&& gzip -9f cksfv-1.1.tar
+	rm -rf ~/cksfv-$(VERSION) \
+	&& cp -r . ~/cksfv-$(VERSION) && cd ~ && rm -rf cksfv-$(VERSION)/CVS \
+	&& rm -rf cksfv-$(VERSION)/src/CVS \
+	&& rm -rf cksfv-$(VERSION)/rpm/CVS \
+	&& tar cf cksfv-$(VERSION).tar cksfv-$(VERSION) \
+	&& gzip -9f cksfv-$(VERSION).tar \
+	&& rm -rf ~/cksfv-$(VERSION) \
 
 rpm:	dist
-	cp ~/cksfv-1.1.tar.gz /usr/src/redhat/SOURCES && \
-	cp rpm/*patch /usr/src/redhat/SOURCES && \
-	cp rpm/cksfv.spec /usr/src/redhat/SPECS && \
-	rpm -ba /usr/src/redhat/SPECS/cksfv.spec
+	cp ~/cksfv-$(VERSION).tar.gz /usr/src/redhat/SOURCES \
+	&& cp rpm/*patch /usr/src/redhat/SOURCES \
+	&& cp rpm/cksfv.spec /usr/src/redhat/SPECS \
+	&& rpm -ba /usr/src/redhat/SPECS/cksfv.spec \
+	&& cp /usr/src/redhat/RPMS/i386/cksfv-$(VERSION)*.i386.rpm ~ \
+	&& cp /usr/src/redhat/SRPMS/cksfv-$(VERSION)*.src.rpm ~ \
+
+full_dist: rpm
+	cp ~/cksfv-$(VERSION)*.src.rpm /home/httpd/html/cksfv/
+	cp ~/cksfv-$(VERSION)*.i386.rpm /home/httpd/html/cksfv/
+	cp ~/cksfv-$(VERSION).tar.gz /home/httpd/html/cksfv/
+	cd /home/httpd/html/cksfv/ && md5sum cksfv-$(VERSION)*.src.rpm \
+	cksfv-$(VERSION)*.i386.rpm cksfv-$(VERSION).tar.gz > \
+	cksfv-$(VERSION).md5 && cksfv cksfv-$(VERSION)*.src.rpm \
+	cksfv-$(VERSION)*.i386.rpm cksfv-$(VERSION).tar.gz > \
+	cksfv-$(VERSION).sfv \
 
 clean:
-	rm -f *.o *~ *.core
-	rm -f rpm/*.o rpm/*~ rpm/*.core
+	rm -f *.o *~ *.core core
+	rm -f rpm/*.o rpm/*~ rpm/*.core rpm/core
 	cd src && gmake clean

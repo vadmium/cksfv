@@ -19,12 +19,13 @@
 
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
 
 extern int  readsfv(char*, char*, int);
 extern int  newsfv(char**);
 extern void pusage();
 
-int verbose = 1; /* 1 if you want the program to be verbose by default */
+int quiet = 0; /* 1 if you want the program to be quiet by default */
 
 int main(int argc, char *argv[])
 {
@@ -45,10 +46,10 @@ int main(int argc, char *argv[])
       rsfvflag = 1;
       break;
     case 'q':
-      verbose = 0;
+      quiet++;
       break;
     case 'v':
-      verbose = 1;
+      quiet = 0;
       break;
     case '?':
     default:

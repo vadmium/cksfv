@@ -31,47 +31,41 @@
 extern int  crc32(int, unsigned long*, unsigned long*);
 extern void prsfv_head(char*);
 
-extern int  verbose;
+int find_file(char*, char*);
 
+extern int  quiet;
 int readsfv(char *fn, char *dir, int nocase)
 {
   FILE          *fd;
-  DIR           *dirp = NULL;
   char          buf[512], *end, filename[512], crc[9], path[256];
   int           file, rval = 0;
   unsigned long len, val, sfvcrc;
-  struct dirent *dirinfo;
   
-  if (verbose == 1) {
+  if (quiet == 0) {
     prsfv_head(fn);
   }
   
   fd = fopen(fn, "r");
   if (fd == NULL) {
-    fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
+    if (quiet != 2)
+      fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
     exit(1);
   }
 
   if (chdir(dir) != 0) {
-    fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
+    if (quiet != 2)
+      fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
     exit(1);
   }
   
-  /* if case insensitive is choosen */
-  if (nocase == 1) {
-    dirp = opendir(".");
-    if (dirp == NULL) {
-      fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
-      exit(1);
-    }
-  }
-  
   while(fgets(buf, 512, fd)) {
-    if (buf[0] != ';') {                /* comment in the sfv file ignore */
+    /* comment in the sfv file ignore */
+    if (buf[0] != ';' && buf[0] != '\n' && buf[0] != '\r') { 
       /* build filename and crc from the sfv file */
       end = strrchr(buf, ' ');
       if (end == NULL) {
         fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
+        exit(1);
       }
       *end = '\0';
       *(end+9) = '\0';
@@ -79,46 +73,45 @@ int readsfv(char *fn, char *dir, int nocase)
       strncpy(filename, buf, 512);
       sfvcrc = strtoul(crc, '\0', 16);
 
-      if (nocase == 1) {
-        len = strlen(filename);
-        while ((dirinfo = readdir(dirp)) != NULL) {
-          if (!strcasecmp(dirinfo->d_name, filename)) {
-            strncpy(filename, dirinfo->d_name, 512);
-            break;
-          }
+      if (quiet == 0)
+        fprintf(stderr, "%-49s ", filename);
+      
+      snprintf(path, 256, "%s/%s", dir, filename);
+
+      /* can we open the file */
+      if ((file = open(filename, O_RDONLY, 0)) < 0) {
+        if (nocase == 1) {
+          /* try to search for it if ingore case is set */
+          find_file(filename, dir);
+          file = open(filename, O_RDONLY, 0);
         }
-        rewinddir(dirp);
       }
 
-      if (verbose == 1)
-        fprintf(stderr, "%-49s ", filename);
-
-      snprintf(path, 256, "%s/%s", dir, filename);
-      
-      if ((file = open(filename, O_RDONLY, 0)) < 0) {
-        if (verbose == 1)
+      /* if the file could not be opened */
+      if (file < 0) {
+        if (quiet == 0)
           fprintf(stderr, "%s\n", strerror(errno));
-        else
+        else if (quiet == 1)
           fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
         rval = 1;
         continue;
       }
       
       if (crc32(file, &val, &len)) {
-        if (verbose == 1)
+        if (quiet == 0)
           fprintf(stderr, "%s\n", strerror(errno));
-        else
+        else if (quiet == 1)
           fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
         rval = 1;
       } else {
         if (val != sfvcrc) {
-          if (verbose == 1)
+          if (quiet == 0)
             fprintf(stderr, "different CRC\n");
-          else
+          else if (quiet == 1)
             fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
           rval = 1;
         } else
-          if (verbose == 1) {
+          if (quiet == 0) {
             fprintf(stderr, "OK\n");
           }
       }
@@ -127,7 +120,7 @@ int readsfv(char *fn, char *dir, int nocase)
   }
   fclose(fd);
 
-  if (verbose == 1) {
+  if (quiet == 0) {
     if (rval == 0) {
       printf("--------------------------------------------------------------------------------\nEverything OK\a\n");
     } else {
@@ -136,4 +129,45 @@ int readsfv(char *fn, char *dir, int nocase)
   }
 
   return(rval);
+}
+
+
+int find_file(char* filename, char* dir)
+{
+  DIR *dirp;
+  struct dirent *dirinfo;
+  char *foo;
+  char *bar;
+  
+  dirp = opendir(".");
+  if (dirp == NULL) {
+    if (quiet != 2)
+      fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
+    return(0);
+  }
+
+  while ((dirinfo = readdir(dirp)) != NULL) {
+    for (foo = filename, bar = dirinfo->d_name; foo != NULL ||
+           bar != NULL; foo++, bar++) {
+      if (foo != bar) {
+        if (isalpha(*foo) && isalpha(*bar)) {
+          if (tolower(*foo) != tolower(*bar)) {
+            break;
+          }
+        } else {
+          if (!((*foo == '_' || *foo == ' ') &&
+                (*bar == '_' || *bar == ' '))) {
+            break;
+          }
+        }
+      }
+    }
+    if (*foo == '\0' && *bar == '\0')
+      strcpy(filename, dirinfo->d_name);
+      
+  }
+  rewinddir(dirp);
+
+  
+  return 1;
 }

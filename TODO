@@ -4,8 +4,6 @@
 
 - Create a better webpage with some documentation.
 
-- Why not a INSTALL file too.
-
 - Man page for the program.
 
 - Better README this will have to be a constant upgrade.
@@ -14,3 +12,14 @@
 
 - Add verbose to the program.  Show what the program is doing when checking
   files. (done v1.1)
+
+- Option to recurse subdirectories.
+
+- More meaningfull exit values.
+
+- Show an estimated time to complete checks and the creation of new sfv files.
+
+- Write a gtk version of the program.
+
+- Ability to check specific files by doing "cksfv -f test.sfv test1.file
+  test2.file".
