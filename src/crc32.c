@@ -16,9 +16,9 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. */
 
-#include <stdint.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdint.h>
 
 extern int errno;
 
@@ -107,7 +107,8 @@ int crc32(int fd, uint32_t *main_val, uint64_t *main_len)
     }
     if (nr == 0)
       break;
-    for (len += nr, p = buf; nr--; ++p) {
+    len += nr;
+    for (p = buf; nr--; ++p) {
       crc = (crc >> 8) ^ crctable[(crc ^ *p) & 0xff];
       crc32_total = (crc >> 8) ^ crctable[(crc32_total ^ *p) & 0xff];
     }
