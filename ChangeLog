@@ -1,9 +1,18 @@
+2005-03-04  Heikki Orsila <heikki.orsila@iki.fi>
+        - configure script now ignore unknown arguments (but gives a warning)
+	- configure allows setting mandir and compiler. Examples:
+	  --mandir=/usr/man/man1
+	  --compiler=/opt/experimental/gcc-4/bin/gcc
+	- fixed wording in man file (Thomas Klausner)
+
 2005-03-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- fixed O_LARGEFILE for macosx
-	- Thomas Klausner submitted partial sfv checking patch. Now
+	- Thomas Klausner submitted partial sfv checking patch by Dieter Baron
+	  <dillo@giga.or.at>. Now
 	  cksfv -f foo.sfv [FILE1 FILE2 ...] checks only given FILES.
-	- Thomas Klausner submitted patch to avoid calculating CRC twice
-	  per file. How did that bug happen originally??
+	- Thomas Klausner <tk@giga.or.at> submitted patch by Tobias Nygren
+	  <tnn@netilium.org> to avoid calculating CRC twice per
+	  file (read once, compute twice).
 
 2005-02-03  Heikki Orsila  <heikki.orsila@iki.fi>
         * version 1.3.2

@@ -1,11 +1,4 @@
-bc:
 - Add the ability to have a comments file when creating .sfv files.
-
-- Use automake for the build.
-
-- Create a better webpage with some documentation.
-
-- Man page for the program.
 
 - Better README this will have to be a constant upgrade.
 
@@ -17,11 +10,11 @@ bc:
 
 - Show an estimated time to complete checks and the creation of new sfv files.
 
-- Write a gtk version of the program.
-
-shd:
 - fix rpm creation
 
 - add deb support
 
 - exit with error on first false checksum or fault
+
+- strip paths feature: cksfv /foo/bar/* generates checksums with filenames
+  that have /foo/bar/ stripped (ie. basenamed filenames)

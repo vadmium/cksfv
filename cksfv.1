@@ -19,7 +19,7 @@ files.  Also, it can be used to create new .sfv files.
 (1) or
 .BR sha1sum
 (1)
-is the suggested way of checksuming new files. cksfv should only
+are the suggested ways of checksuming new files. cksfv should only
 be used for compatibility with other systems.
 
 .SH OPTIONS
@@ -58,11 +58,14 @@ that have case-insensitive filesystem names.
 .ft B
 cksfv -i -f files.sfv
 
+.ft R
+Check checksums of files 'foo' and 'bar' listed in 'files.sfv':
+.ft B
+cksfv -f files.sfv foo bar
+
 .SH "SEE ALSO"
 .BR md5sum (1)
-
-.SH FILES
-The program binary and the man page.
+.BR sha1sum (1)
 
 .SH AUTHOR
 This manual page was written by Stefan Alfredsson <stefan@alfredsson.org>,
