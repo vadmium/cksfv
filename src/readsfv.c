@@ -95,7 +95,7 @@ int readsfv(char *fn, char *dir, int nocase)
     buf[ind] = '\0'; /* zero between filename and checksum */
     buf[ind + 9] = '\0'; /* zero after checksum */
     sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
-    
+
     filename = buf;
     if (strlen(filename) >= PATH_MAX) {
       fprintf(stderr, "cksfv: filename too long\n");
