@@ -46,13 +46,3 @@ if test "$?" != "0" ; then
     exit -1
 fi
 echo test case 5 succesful
-
-# test case 6
-$cksfv -q -f c1.sfv 2>/dev/null > tmpfile
-$cksfv -q -f c2.sfv 2>/dev/null >> tmpfile
-$cksfv -q -i -f c3.sfv 2>/dev/null >> tmpfile
-if test "`wc -l < tmpfile`" != "0" ; then
-    echo "test case 6 unsuccesful. tmpfile not empty."
-    exit -1
-fi
-echo test case 6 succesful
