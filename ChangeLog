@@ -1,3 +1,9 @@
+2005-04-04  Heikki Orsila <heikki.orsila@iki.fi>
+        * version 1.3.4
+	- compatibility fixes
+	- recursive sfv file checking support by Durk van Veen
+	  <durk.van.veen@gmail.com>
+
 2005-03-26  Heikki Orsila <heikki.orsila@iki.fi>
 	- trivial fix for 'make check'. It wasn't posix sh compatible.
 	  On bash "==" is the same as "=".
