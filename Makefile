@@ -16,14 +16,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-VERSION="1.3.1"
+VERSION="1.3.2"
 WEBSITE=/var/www/html/cksfv/
+BINDIR="/tmp///usr/local/bin"
+MANDIR="/tmp///usr/local/share/man/man1"
 
 all:
 	$(MAKE) -C src VERSION=$(VERSION)
 
-install:
-	$(MAKE) -C src VERSION=$(VERSION) install
+install:	
+	mkdir -p $(BINDIR) $(MANDIR)
+	install src/cksfv $(BINDIR)
+	install cksfv.1 $(MANDIR)
 
 dist:
 	gmake clean
