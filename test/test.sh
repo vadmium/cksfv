@@ -82,4 +82,3 @@ if test "$?" = "0" ; then
     exit -1
 fi
 echo test case 9 succesful
-

@@ -94,6 +94,12 @@ int readsfv(char *fn, char *dir, int nocase, int quiet)
 	exit(1);
       }
     }
+    /* must be followed by a whitespace char */
+    if (!isspace((int) buf[ind + 9])) {
+      fprintf(stderr, "cksfv: too long a checksum: %s\n", &buf[ind + 1]);
+      exit(1);
+    }
+
     buf[ind] = '\0'; /* zero between filename and checksum */
     buf[ind + 9] = '\0'; /* zero after checksum */
     sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
