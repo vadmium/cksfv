@@ -24,6 +24,8 @@
 #include <time.h>
 #include <stdlib.h>
 
+#define WEBSITE "http://www.iki.fi/shd/foss/cksfv/"
+
 void pnsfv_head()
 {
   clock_t       clock;
@@ -35,8 +37,9 @@ void pnsfv_head()
   printf("%02d-%02d-%02d at %02d:%02d.%02d\n", timeinfo->tm_year+1900,
          timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour,
          timeinfo->tm_min, timeinfo->tm_sec);
-  printf("; Written by Bryan Call <bc@fodder.org> ");
-  printf("- http://www.fodder.org/cksfv\n");
+  printf("; Originally Written by Bryan Call <bc@fodder.org>\n");
+  printf("; New versions maintained by Heikki Orsila <heikki.orsila@iki.fi>\n");
+  printf("; New versions can be obtained from %s\n", WEBSITE);
 }
 
 void pfileinfo(char **argv)
@@ -69,10 +72,6 @@ void prsfv_head(char *fn)
   char          head[81], *p;
   int           len;
   
-  fprintf(stderr, "cksfv v%s written by Bryan Call <bc@fodder.org>\n",
-          VERSION);
-  fprintf(stderr, "           http://www.fodder.org/cksfv\n\n");
-
   snprintf(head, 80, "--( Verifying: %s", fn);
   len = strlen(head);
   if (len < 76) {
@@ -96,15 +95,14 @@ void prsfv_head(char *fn)
 
 void pusage()
 {
-  fprintf(stderr, "cksfv v%s written by Bryan Call <bc@fodder.org>\n",
-          VERSION);
-  fprintf(stderr, "           http://www.fodder.org/cksfv\n\n");
-  fprintf(stderr, "usage: cksfv [-iq] [-C directory] [-f file.sfv] ");
-  fprintf(stderr, "[file ...]\nsupported options:\n\n");
-  fprintf(stderr, " -C\tchange to directory for processing\n");
-  fprintf(stderr, " -f\t.sfv file to verify\n");
-  fprintf(stderr, " -i\tignore case on filenames\n");
-  fprintf(stderr, " -q\tquiet, only prints error messages\n");
-  fprintf(stderr, " -v\tverbose, by default this option is on\n");
+  fprintf(stdout, "cksfv v%s:\tBryan Call <bc@fodder.org>, and later modified by\n\t\tHeikki Orsila <heikki.orsila@iki.fi>.\n", VERSION);
+  fprintf(stdout, "\tweb:\t%s\n\n", WEBSITE);
+  fprintf(stdout, "usage: cksfv [-iq] [-C directory] [-f file.sfv] ");
+  fprintf(stdout, "[file ...]\nsupported options:\n\n");
+  fprintf(stdout, " -C\tchange to directory for processing\n");
+  fprintf(stdout, " -f\t.sfv file to verify\n");
+  fprintf(stdout, " -i\tignore case on filenames\n");
+  fprintf(stdout, " -q\tquiet, only prints error messages\n");
+  fprintf(stdout, " -v\tverbose, by default this option is on\n");
   exit(1);
 }  

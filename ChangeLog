@@ -1,9 +1,10 @@
 2005-01-25  Heikki Orsila  <heikki.orsila@iki.fi>
-        - Man page from Debian distribution
+        - Added and edited man page from Debian distribution
 	- Fixed Makefile issues for -jx
 	- Added a simple configure script for more consistent compilation
 	- Removed b0rken rpm creation from Makefile
-	
+	- Removed spam messages (when creating and verifying checksums)
+
 2005-01-24  Heikki Orsila  <heikki.orsila@iki.fi>
         * no new version
 	- I decided to start maintaining the program since Bryan Call is

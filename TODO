@@ -23,6 +23,7 @@ bc:
   test2.file".
 
 shd:
-- Remove spam messages
+- fix rpm creation
 
-- fix rpm and deb creation
+- add deb support
+
