@@ -101,7 +101,7 @@ int readsfv(char *fn, char *dir, int nocase)
       fprintf(stderr, "cksfv: filename too long\n");
       exit(1);
     }
-    
+
     if (quiet == 0)
       fprintf(stderr, "%-49s ", filename);
 
@@ -123,7 +123,7 @@ int readsfv(char *fn, char *dir, int nocase)
       rval = 1;
       continue;
     }
-      
+
     if (crc32(file, &val, &len)) {
       if (quiet == 0)
 	fprintf(stderr, "%s\n", strerror(errno));
@@ -138,9 +138,8 @@ int readsfv(char *fn, char *dir, int nocase)
 	  fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
 	rval = 1;
       } else
-	if (quiet == 0) {
+	if (quiet == 0)
 	  fprintf(stderr, "OK\n");
-	}
     }
     close(file);
   }
@@ -153,7 +152,6 @@ int readsfv(char *fn, char *dir, int nocase)
       printf("--------------------------------------------------------------------------------\nErrors Occured\a\n");
     }
   }
-
   return rval;
 }
 
