@@ -17,17 +17,14 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. */
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <errno.h>
 
 extern int  readsfv(char*, char*, int);
 extern int  newsfv(char**);
+extern void pusage();
 
-static void usage();
+int verbose = 1; /* 1 if you want the program to be verbose by default */
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +32,7 @@ int main(int argc, char *argv[])
   int   nocase = 0, rsfvflag = 0;
   char  dir[256] = ".", sfvfile[256];
 
-  while ((ch = getopt(argc, argv, "iC:f:")) != -1)
+  while ((ch = getopt(argc, argv, "iC:f:qv")) != -1)
     switch (ch) {
     case 'i':
       nocase = 1;
@@ -47,34 +44,28 @@ int main(int argc, char *argv[])
       strncpy(sfvfile, optarg, 256);
       rsfvflag = 1;
       break;
+    case 'q':
+      verbose = 0;
+      break;
+    case 'v':
+      verbose = 1;
+      break;
     case '?':
     default:
-      usage();
+      pusage();
     }
   argc -= optind;
   argv += optind;
-  
+
   if (rsfvflag == 1) {
     rval = readsfv(sfvfile, dir, nocase);
   } else {
     if (argc < 1) {
-      usage();
+      pusage();
     }
 
     rval = newsfv(argv);
   }
-  
+
   exit(rval);
 }
-
-static void usage()
-{
-  fprintf(stderr, "cksfv v1.0 written by Bryan Call <bc@fodder.org>\n");
-  fprintf(stderr, "           http://www.fodder.org/cksfv\n\n");
-  fprintf(stderr, "usage: cksfv [-i] [-C directory] [-f file.sfv] ");
-  fprintf(stderr, "[file ...]\nsupported options:\n\n");
-  fprintf(stderr, " -i\tingore case on filenames\n");
-  fprintf(stderr, " -C\tchange to directory for processing\n");
-  fprintf(stderr, " -f\tsfv file to verify\n");
-  exit(1);
-}  

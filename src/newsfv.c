@@ -22,9 +22,9 @@
 #include <errno.h>
 #include <unistd.h>
 
-extern void pheader();
+extern void pnsfv_head();
 extern void pfileinfo(char**);
-extern void pcrc(char*, unsigned long, unsigned long);
+extern void pcrc(char*, unsigned long);
 extern int  crc32(int, unsigned long*, unsigned long*);
 
 int newsfv(char **argv)
@@ -33,7 +33,7 @@ int newsfv(char **argv)
   char          *fn;
   unsigned long len, val;
   
-  pheader();
+  pnsfv_head();
   pfileinfo(argv);
   
   while (*argv) {
@@ -48,7 +48,7 @@ int newsfv(char **argv)
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
     } else
-      pcrc(fn, val, len);
+      pcrc(fn, val);
     close(fd);
   }
 

@@ -29,8 +29,9 @@
 #include <stdlib.h>
 
 extern int  crc32(int, unsigned long*, unsigned long*);
+extern void prsfv_head(char*);
 
-void strlower(char*);
+extern int  verbose;
 
 int readsfv(char *fn, char *dir, int nocase)
 {
@@ -40,6 +41,10 @@ int readsfv(char *fn, char *dir, int nocase)
   int           file, rval = 0;
   unsigned long len, val, sfvcrc;
   struct dirent *dirinfo;
+  
+  if (verbose == 1) {
+    prsfv_head(fn);
+  }
   
   fd = fopen(fn, "r");
   if (fd == NULL) {
@@ -84,26 +89,51 @@ int readsfv(char *fn, char *dir, int nocase)
         }
         rewinddir(dirp);
       }
-      
+
+      if (verbose == 1)
+        fprintf(stderr, "%-49s ", filename);
+
       snprintf(path, 256, "%s/%s", dir, filename);
       
       if ((file = open(filename, O_RDONLY, 0)) < 0) {
-        fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
+        if (verbose == 1)
+          fprintf(stderr, "%s\n", strerror(errno));
+        else
+          fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
         rval = 1;
         continue;
       }
       
-      if (crc32(file, &val, &len)) 
-        fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
-
-      if (val != sfvcrc) {
-        fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
+      if (crc32(file, &val, &len)) {
+        if (verbose == 1)
+          fprintf(stderr, "%s\n", strerror(errno));
+        else
+          fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
         rval = 1;
+      } else {
+        if (val != sfvcrc) {
+          if (verbose == 1)
+            fprintf(stderr, "different CRC\n");
+          else
+            fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
+          rval = 1;
+        } else
+          if (verbose == 1) {
+            fprintf(stderr, "OK\n");
+          }
       }
       close(file);
     }
   }
   fclose(fd);
+
+  if (verbose == 1) {
+    if (rval == 0) {
+      printf("--------------------------------------------------------------------------------\nEverything OK\a\n");
+    } else {
+      printf("--------------------------------------------------------------------------------\nErrors Occured\a\n");
+    }
+  }
 
   return(rval);
 }

@@ -1,5 +1,16 @@
+2000-05-18  Bryan Call  <bc@fodder.org>
+
+	* version 1.1
+	- Added verbose to the program.  Now the program will list what file it
+	is working on and the status of the file.  When it is finished it will
+	display a final result, if it encountered any errors or not, and it
+	will print the bell character. You can turn this off with the -q option
+	(quiet).
+	- Moved some functions around a some other minor stuff.
+
 2000-05-16  Bryan Call  <bc@fodder.org>
 
-	* version 1.0 this is the first version that has been released for
-	public consumption.  Hopefully, I have worked out most of the bugs.
-	I have this working on FreeBSD 3.4 and Redhat 6.1 (i386).
+	* version 1.0
+	- This is the first version that has been released for public
+	consumption.  Hopefully, I have worked out most of the bugs. I have
+	this working on FreeBSD 3.4 and Redhat 6.1 (i386).

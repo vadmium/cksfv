@@ -16,26 +16,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-all:
-	cd src && gmake
+PROG=		cksfv
+CFLAGS+=	-Wall -Werror -O2
+SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
 
-install:
-	cd src && gmake install
+cksfv: $(SRCS)
+	gcc $(CFLAGS) -o $(PROG) $(SRCS)
 
-dist:
-	gmake clean
-	rm -rf ~/cksfv-1.1 && \
-	cp -r . ~/cksfv-1.1 && cd ~ && rm -rf cksfv-1.1/CVS \
-	&& rm -rf cksfv-1.1/src/CVS && tar cf cksfv-1.1.tar cksfv-1.1 \
-	&& gzip -9f cksfv-1.1.tar
-
-rpm:	dist
-	cp ~/cksfv-1.1.tar.gz /usr/src/redhat/SOURCES && \
-	cp rpm/*patch /usr/src/redhat/SOURCES && \
-	cp rpm/cksfv.spec /usr/src/redhat/SPECS && \
-	rpm -ba /usr/src/redhat/SPECS/cksfv.spec
+install: cksfv
+	cp $(PROG) /usr/local/bin
 
 clean:
-	rm -f *.o *~ *.core
-	rm -f rpm/*.o rpm/*~ rpm/*.core
-	cd src && gmake clean
+	rm -f *.o *~ *.core $(PROG)

@@ -1,0 +1,16 @@
+- Add the ability to have a comments file when creating .sfv files.
+
+- Use automake for the build.
+
+- Create a better webpage with some documentation.
+
+- Why not a INSTALL file too.
+
+- Man page for the program.
+
+- Better README this will have to be a constant upgrade.
+
+- Make verbose by default a compile time option.
+
+- Add verbose to the program.  Show what the program is doing when checking
+  files. (done v1.1)
