@@ -5,6 +5,7 @@ prefix=/usr/local
 packageprefix=""
 compiler="gcc"
 have_mandir="no"
+have_bindir="no"
 
 for opt in "$@" ; do
 	case $opt in
@@ -13,6 +14,10 @@ for opt in "$@" ; do
 		;;
 	--package-prefix=*)
 		packageprefix=`echo $opt | sed -n 's|--package-prefix=\(.*\)|\1|p'`
+		;;
+	--bindir=*)
+		bindir=`echo $opt | sed -n 's|--bindir=\(.*\)|\1|p'`
+		have_bindir="yes"
 		;;
 	--mandir=*)
 		mandir=`echo $opt | sed -n 's|--mandir=\(.*\)|\1|p'`
@@ -27,6 +32,7 @@ for opt in "$@" ; do
 		echo "--prefix dir           install to prefix 'dir'"
  		echo "--package-prefix dest  pretend to install to the prefix,"
 		echo "                       but copy files to 'dest/prefix' on make install"
+		echo "--bindir dir           install program to 'dir' (PREFIX/bin/)"
 		echo "--mandir dir           install man page to 'dir' (PREFIX/share/man/man1/)"
 		echo "--compiler program     compile with 'program' (gcc)"
 		exit
@@ -41,16 +47,19 @@ if test -n "$packageprefix" ; then
     packageprefix="$packageprefix/"
 fi
 
-bindir="$packageprefix$prefix/bin"
-
-if test "$have_mandir" = "no" ; then
-    mandir="$packageprefix$prefix/share/man/man1"
-else
-    mandir="$packageprefix$mandir"
+if test "$have_bindir" = "no" ; then
+    bindir="$prefix/bin"
 fi
 
-sed -e "s|{BINDIR}|$bindir|g" \
-    -e "s|{MANDIR}|$mandir|g" \
+if test "$have_mandir" = "no" ; then
+    mandir="$prefix/share/man/man1"
+fi
+
+packagebindir="$packageprefix$bindir"
+packagemandir="$packageprefix$mandir"
+
+sed -e "s|{BINDIR}|$packagebindir|g" \
+    -e "s|{MANDIR}|$packagemandir|g" \
     < Makefile.in > Makefile
 
 sed -e "s|{CC}|$compiler|" \
