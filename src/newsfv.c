@@ -24,7 +24,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <stdint.h>
+
+#include "config.h"
+
+#ifndef O_LARGEFILE
+#define O_LARGEFILE (0)
+#endif
 
 extern void pnsfv_head();
 extern void pfileinfo(char **);

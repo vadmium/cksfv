@@ -28,10 +28,15 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <stdint.h>
+
+#include "config.h"
 
 #ifndef PATH_MAX
 #define PATH_MAX (512)
+#endif
+
+#ifndef O_LARGEFILE
+#define O_LARGEFILE (0)
 #endif
 
 extern int crc32(int fd, uint32_t *val);

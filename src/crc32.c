@@ -18,7 +18,8 @@
 
 #include <unistd.h>
 #include <errno.h>
-#include <stdint.h>
+
+#include "config.h"
 
 extern int errno;
 

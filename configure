@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="1.3.2"
+version="1.3.3"
 prefix=/usr/local
 packageprefix=""
 
@@ -33,8 +33,13 @@ mandir="$packageprefix$prefix/share/man/man1"
 
 sed -e "s|{BINDIR}|$bindir|g" \
     -e "s|{MANDIR}|$mandir|g" \
-    -e "s|{VERSION}|$version|g" \
     < Makefile.in > Makefile
+
+echo "" > "src/config.h"
+echo "#ifndef CKSFV_CONFIG_H" >> "src/config.h"
+echo "#define CKSFV_CONFIG_H" >> "src/config.h"
+
+echo "#define VERSION \"$version\"" >> src/config.h
 
 cat > tmpfile.c <<EOF
 #include <stdint.h>
@@ -45,12 +50,14 @@ EOF
 gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
 if test "$?" != "0" ; then
     # no stdint.h. obsolete environment. but we may hope
-    echo "#include <unistd.h>" > src/stdint.h
-    echo "" >> src/stdint.h
+    echo "#include <unistd.h>" >> src/config.h
     has_stdint="no (you need luck to succeed)"
 else
+    echo "#include <stdint.h>" >> src/config.h
     has_stdint="yes"
 fi
+
+echo "#endif" >> "src/config.h"
 
 echo ""
 echo "  prefix directory:          $prefix"

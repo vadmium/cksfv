@@ -16,12 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-VERSION="{VERSION}"
 BINDIR="{BINDIR}"
 MANDIR="{MANDIR}"
 
 all:
-	$(MAKE) -C src VERSION=$(VERSION)
+	$(MAKE) -C src
 
 install:	
 	mkdir -p $(BINDIR) $(MANDIR)

@@ -16,12 +16,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+CC=		gcc
 PROG=		cksfv
 CFLAGS2=	-Wall -O2 -g -D_LARGEFILE64_SOURCE -I. $(CFLAGS)
 SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
 
 $(PROG): $(SRCS)
-	gcc -DVERSION=\"$(VERSION)\" $(CFLAGS2) -o $(PROG) $(SRCS) $(LDFLAGS)
+	$(CC) $(CFLAGS2) -o $(PROG) $(SRCS) $(LDFLAGS)
 
 clean:
 	rm -f *.o *~ *.core core $(PROG)

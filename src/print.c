@@ -23,7 +23,8 @@
 #include <errno.h>
 #include <time.h>
 #include <stdlib.h>
-#include <stdint.h>
+
+#include "config.h"
 
 #define WEBSITE "http://www.iki.fi/shd/foss/cksfv/"
 
