@@ -34,12 +34,12 @@
 #define PATH_MAX (512)
 #endif
 
-extern int crc32(int fd, uint32_t *main_val, uint64_t *main_len);
-extern void prsfv_head(char*);
+extern int crc32(int fd, uint32_t *val, uint64_t *len);
+extern void prsfv_head(char *);
 
-static int find_file(char*, char*);
+static int find_file(char *, char *);
 
-extern int  quiet;
+extern int quiet;
 
 int readsfv(char *fn, char *dir, int nocase)
 {

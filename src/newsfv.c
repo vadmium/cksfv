@@ -16,7 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. */
 
-#include <stdint.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -25,22 +24,23 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <stdint.h>
 
 extern void pnsfv_head();
 extern void pfileinfo(char**);
-extern void pcrc(char*, unsigned long val);
-extern int crc32(int, uint32_t *, unsigned long *);
+extern void pcrc(char *fn, uint32_t val);
+extern int crc32(int fd, uint32_t *val, uint64_t *len);
 
 int newsfv(char **argv)
 {
-  int           fd, rval = 0;
-  char          *fn;
-  unsigned long len;
-  uint32_t      val;
-  
+  int fd, rval = 0;
+  char *fn;
+  uint64_t len;
+  uint32_t val;
+
   pnsfv_head();
   pfileinfo(argv);
-  
+
   while (*argv) {
     fn = *argv++;
     if ((fd = open(fn, O_RDONLY | O_LARGEFILE, 0)) < 0) {
@@ -48,7 +48,7 @@ int newsfv(char **argv)
       rval = 1;
       continue;
     }
-    
+
     if (crc32(fd, &val, &len)) {
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;

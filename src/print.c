@@ -23,6 +23,7 @@
 #include <errno.h>
 #include <time.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #define WEBSITE "http://www.iki.fi/shd/foss/cksfv/"
 
@@ -62,9 +63,9 @@ void pfileinfo(char **argv)
   }
 }
 
-void pcrc(char *fn, unsigned long val)
+void pcrc(char *fn, uint32_t val)
 {
-  printf("%s %.8lX\n", fn, val);
+  printf("%s %.8X\n", fn, val);
 }
 
 void prsfv_head(char *fn)
