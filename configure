@@ -36,10 +36,26 @@ sed -e "s|{BINDIR}|$bindir|g" \
     -e "s|{VERSION}|$version|g" \
     < Makefile.in > Makefile
 
+cat > tmpfile.c <<EOF
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+int main(void) {return 0;}
+EOF
+gcc -Wall -O2 -o tmpfile tmpfile.c &>/dev/null
+if test "$?" != "0" ; then
+    # no stdint.h. obsolete environment. but we may hope
+    touch src/stdint.h
+    has_stdint="no"
+else
+    has_stdint="yes"
+fi
+
 echo ""
 echo "  prefix directory:          $prefix"
 echo "  package prefix:            $packageprefix"
 echo "  binary directory:          $bindir"
 echo "  man directory:             $mandir"
+echo "  has stdint.h:              $has_stdint"
 echo ""
 echo "configure succesful."
