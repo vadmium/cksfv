@@ -1,3 +1,10 @@
+2005-02-03  Heikki Orsila  <heikki.orsila@iki.fi>
+        - solaris printf workaround. use %lu tu print filesizes. works
+	  best on 64-bit architectures (with compilers assuming sizeof(long)
+	  == sizeof(size_t)). GNU/Linux support %zu which is the appropriate
+	  modifier for this case, but can't have it everywhere.
+	- doesn't print directory infos into catalogues when creating sfvs
+
 2005-01-26  Heikki Orsila  <heikki.orsila@iki.fi>
 	- fixed output (displayed only 32-bit file sizes, and months wrong)
 	  OLD:

@@ -29,3 +29,5 @@ shd:
 
 - exit with error on first false checksum or fault
 
+- do not print directories into catalog
+

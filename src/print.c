@@ -55,8 +55,8 @@ void pfileinfo(char **argv)
     fn = *argv++;
     if (!(stat(fn, &sb))) {
       timeinfo = localtime(&sb.st_mtime);
-      printf(";%13zu  %02d:%02d.%02d %02d-%02d-%02d %s\n",
-	     (size_t) sb.st_size, timeinfo->tm_hour, timeinfo->tm_min,
+      printf(";%13lu  %02d:%02d.%02d %02d-%02d-%02d %s\n",
+	     (unsigned long) sb.st_size, timeinfo->tm_hour, timeinfo->tm_min,
              timeinfo->tm_sec,
              timeinfo->tm_year+1900, timeinfo->tm_mon+1, timeinfo->tm_mday, fn);
     }
