@@ -67,10 +67,19 @@ if test "$?" = "0" ; then
 fi
 echo test case 7 succesful
 
-# tset case 8 (checksum code with one too few characters)
+# test case 8 (checksum code with one too few characters)
 $cksfv -f c5.sfv >/dev/null 2>/dev/null
 if test "$?" = "0" ; then
     echo "test case 8 unsuccesful."
     exit -1
 fi
 echo test case 8 succesful
+
+# test case 8 (checksum code with one too many characters)
+$cksfv -f c6.sfv >/dev/null 2>/dev/null
+if test "$?" = "0" ; then
+    echo "test case 8 unsuccesful."
+    exit -1
+fi
+echo test case 9 succesful
+
