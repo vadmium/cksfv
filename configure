@@ -45,8 +45,9 @@ EOF
 gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
 if test "$?" != "0" ; then
     # no stdint.h. obsolete environment. but we may hope
-    touch src/stdint.h
-    has_stdint="no"
+    echo "#include <unistd.h>" > src/stdint.h
+    echo "" >> src/stdint.h
+    has_stdint="no (you need luck to succeed)"
 else
     has_stdint="yes"
 fi
