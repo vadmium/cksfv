@@ -4,3 +4,5 @@ Bryan Call <bc@fodder.org>: original author
 Minor modifications:
 Dieter Baron <dillo@giga.or.at>: checksuming for a subset of files in sfv
 Tobias Nygren <tnn@netilium.org>: remove useless computations from crc32()
+Durk van Veen <durk.van.veen@gmail.com>: added directory recursion
+

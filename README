@@ -65,6 +65,21 @@ files you want checked on the command line:
         ------------------------------------------------------------
         Everything OK
 
+To check an entire directory plus any subdirectories recursively, you can
+issue the recursive option. Note that you do not explicitly specify the name
+of the .sfv file: the utility will look for an .sfv file in each directory
+and automatically process it:
+
+        $ cksfv -C /home/user/somedir -r
+
+Note that by default symlinks are not followed by the command if the recursive
+option is used, in order to prevent dangerous infinite recursion. If you feel
+that for a particular situation it is warranted and safe to follow symlinks, 
+modify the command like so:
+
+        $ cksfv -C /home/user/somdir -r -L
+
+
 Now for creating your own .sfv files.  You can run the following command.
 
         $ cksfv * > mine.sfv

@@ -5,7 +5,7 @@
 cksfv \- tests and creates simple file verification (SFV) listings
 .SH SYNOPSIS
 .B cksfv
-.I "[-biq] [-C directory] [-f file.sfv] [file ...]"
+.I "[-biqrL] [-C directory] [-f file.sfv] [file ...]"
 .br
 .SH "DESCRIPTION"
 Some files that you download will come with a .sfv file.
@@ -42,6 +42,14 @@ quiet, only prints error messages
 .TP
 .B \-v
 verbose, by default this option is on
+.TP
+.B \-r
+recurse directories and check the .sfv files in each. This option
+cannot be used in conjunction with the -f option.
+.TP
+.B \-L
+follow symlinks when recursing subdirectories. This option only has
+meaning when used in conjunction with the -r option.
 
 .SH EXAMPLES
 .nf
@@ -71,6 +79,18 @@ Create checksums of files matching /foo/bar/* and strip dirnames away:
 .ft B
 cksfv -b /foo/bar/* > files.sfv
 
+.ft R
+Recursively scan through a directory and subdirectories and process
+each .sfv file that is found:
+.ft B
+cksfv -C /foo/bar -r
+
+.ft R
+Same as previous, but starting from the current working directory 
+and also following symlinks during recursion:
+.ft B
+cksfv -r -L
+
 .SH "SEE ALSO"
 .BR basename (1)
 .BR dirname (1)
@@ -80,4 +100,5 @@ cksfv -b /foo/bar/* > files.sfv
 .SH AUTHOR
 This manual page was written by Stefan Alfredsson <stefan@alfredsson.org>,
 for the Debian GNU/Linux system (but may be used by others). It was later
-modified by Heikki Orsila <heikki.orsila@iki.fi>.
+modified by Heikki Orsila <heikki.orsila@iki.fi> and Durk van Veen
+<durk.van.veen@gmail.com>.

@@ -4,7 +4,7 @@
 
 - Make verbose by default a compile time option.
 
-- Option to recurse subdirectories.
+- Option to recurse subdirectories (supported for reading SFV, but not writing).
 
 - More meaningfull exit values.
 

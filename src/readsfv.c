@@ -351,7 +351,7 @@ int recursivereadsfv(char *dir, int follow, int argc, char **argv)
        }
 
        if (!QUIET)
-	 fprintf(stderr, "Entering directory: %s\n", cwd);
+	 fprintf(stderr, "Entering directory: %s\n", processdir);
 
        if (readsfv(dirinfo->d_name, processdir, argc, argv))
 	 finalret = 1;
