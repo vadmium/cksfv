@@ -1,0 +1,44 @@
+.TH CKSFV 1
+.\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
+.\" other parms are allowed: see man(7), man(1)
+.SH NAME
+cksfv \- tests and creates simple file verification (SFV) listings
+.SH SYNOPSIS
+.B cksfv
+.I "[-iq] [-C directory] [-f file.sfv] [file ...]"
+.br
+.SH "DESCRIPTION"
+This manual page documents briefly the
+.BR cksfv
+command.
+This manual page was written for the Debian GNU/Linux distribution
+because the original program does not have a manual page. Most of
+the text is cut'n'pasted from the README information shipped with
+the software.
+.PP
+Some files that you download will come with a .sfv file.  This is used to
+verify that the files that you recieved are the same as the originals.
+cksfv is a program that can use the .sfv file to verify the downloaded
+files.  Also, it can be used to create new .sfv files.
+
+.SH OPTIONS
+These options are available
+.TP
+.B \-C
+change to directory for processing
+.TP
+.B \-f
+ .sfv file to verify
+.TP
+.B \-i
+ignore case on filenames
+.TP
+.B \-q
+quiet, only prints error messages
+.TP
+.B \-v
+verbose, by default this option is on
+.SH "SEE ALSO"
+.SH AUTHOR
+This manual page was written by Stefan Alfredsson <stefan@alfredsson.org>,
+for the Debian GNU/Linux system (but may be used by others).

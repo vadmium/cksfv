@@ -1,3 +1,7 @@
+2005-01-25  Heikki Orsila  <heikki.orsila@iki.fi>
+        - Man page from Debian distribution
+	- Fixed Makefile issues for -jx
+
 2005-01-24  Heikki Orsila  <heikki.orsila@iki.fi>
         * no new version
 	- I decided to start maintaining the program since Bryan Call is
