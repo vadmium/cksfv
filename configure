@@ -52,7 +52,7 @@ if test "$have_bindir" = "no" ; then
 fi
 
 if test "$have_mandir" = "no" ; then
-    mandir="$prefix/share/man/man1"
+    mandir="$prefix/share/man"
 fi
 
 packagebindir="$packageprefix$bindir"
