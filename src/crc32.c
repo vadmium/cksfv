@@ -94,8 +94,8 @@ static const uint32_t crctable[256] = {
 
 int crc32(int fd, uint32_t *main_val)
 {
-  char buf[BUFFERSIZE], *p;
-  uint64_t len = 0;
+  char buf[BUFFERSIZE];
+  char *p;
   int nr;
   uint32_t crc = ~0, crc32_total = ~0;
 
@@ -107,7 +107,6 @@ int crc32(int fd, uint32_t *main_val)
     }
     if (nr == 0)
       break;
-    len += nr;
     for (p = buf; nr--; ++p) {
       crc = (crc >> 8) ^ crctable[(crc ^ *p) & 0xff];
       crc32_total = (crc >> 8) ^ crctable[(crc32_total ^ *p) & 0xff];

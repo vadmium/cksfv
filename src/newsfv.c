@@ -29,13 +29,12 @@
 extern void pnsfv_head();
 extern void pfileinfo(char **);
 extern void pcrc(char *fn, uint32_t val);
-extern int crc32(int fd, uint32_t *val, uint64_t *len);
+extern int crc32(int fd, uint32_t *val);
 
 int newsfv(char **argv)
 {
   int fd, rval = 0;
   char *fn;
-  uint64_t len;
   uint32_t val;
 
   pnsfv_head();
@@ -49,11 +48,11 @@ int newsfv(char **argv)
       continue;
     }
 
-    if (crc32(fd, &val, &len)) {
+    if (crc32(fd, &val)) {
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
     } else
-      pcrc(fn, (unsigned long) val);
+      pcrc(fn, val);
     close(fd);
   }
 

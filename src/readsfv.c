@@ -34,7 +34,7 @@
 #define PATH_MAX (512)
 #endif
 
-extern int crc32(int fd, uint32_t *val, uint64_t *len);
+extern int crc32(int fd, uint32_t *val);
 extern void prsfv_head(char *fn);
 
 static int find_file(char *filename, char *dir, int quiet);
@@ -47,7 +47,6 @@ int readsfv(char *fn, char *dir, int nocase, int quiet)
   char *filename;
   char *end;
   int file, rval = 0;
-  uint64_t len;
   uint32_t sfvcrc;
   uint32_t val;
   int ind;
@@ -127,7 +126,7 @@ int readsfv(char *fn, char *dir, int nocase, int quiet)
       continue;
     }
 
-    if (crc32(file, &val, &len)) {
+    if (crc32(file, &val)) {
       if (quiet == 0)
 	fprintf(stderr, "%s\n", strerror(errno));
       else if (quiet == 1)
