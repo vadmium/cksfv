@@ -4,7 +4,8 @@
 	  ;    100663296  14:54.37 2005-00-25 zeros
 	  NEW:
 	  ;   4395630592  14:54.37 2005-01-25 zeros
-
+	- lots of code cleanups
+	
 2005-01-25  Heikki Orsila  <heikki.orsila@iki.fi>
 	* no new version
         - Added and edited man page from Debian distribution
