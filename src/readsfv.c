@@ -30,10 +30,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#ifndef PATH_MAX
-#define PATH_MAX (512)
-#endif
-
 extern int crc32(int fd, uint32_t *main_val, uint64_t *main_len);
 extern void prsfv_head(char*);
 
@@ -44,7 +40,7 @@ extern int  quiet;
 int readsfv(char *fn, char *dir, int nocase)
 {
   FILE *fd;
-  char buf[PATH_MAX + 256]; /* enough for name and checksum */
+  char buf[PATH_MAX + 256];
   char *filename;
   char *end;
   int file, rval = 0;
@@ -54,9 +50,10 @@ int readsfv(char *fn, char *dir, int nocase)
   int ind;
   int j;
 
-  if (quiet == 0)
+  if (quiet == 0) {
     prsfv_head(fn);
-
+  }
+  
   fd = fopen(fn, "r");
   if (fd == NULL) {
     if (quiet != 2)
@@ -195,5 +192,7 @@ static int find_file(char* filename, char* dir)
       
   }
   rewinddir(dirp);
+
+  
   return 1;
 }
