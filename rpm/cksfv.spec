@@ -1,61 +1,111 @@
-%define ver      1.3
-%define rel      0
-%define prefix   /usr
-
-Summary: Simple File Verification program.  Does crc32 checksums on files.
-Name: cksfv
-Version: %ver
-Release: %rel
-Copyright: GPL
-Group: Applications/File
-Source: http://www.fodder.org/cksfv/cksfv-%{ver}.tar.gz
-
-Patch1: cksfv-makefile.patch
-
-URL: http://www.fodder.org/cksfv
-Docdir: %{prefix}/doc
+# $Revision: 1.2 $, $Date: 2005/02/04 18:00:51 $
+Summary:	Test archives using information from .sfv
+Summary(pl):	Testowanie archiwów z u¿yciem informacji z plików .sfv
+Name:		cksfv
+Version:	1.3.2
+Release:	1
+License:	GPL
+Vendor:		Bryan Call <bc@fodder.org>
+Group:		Applications/Archiving
+Source0:	http://www.modeemi.fi/~shd/foss/cksfv/files/%{name}-%{version}.tar.bz2
+# Source0-md5:	e24b27c2f4ae36c1223b6be846ec98db
+URL:		http://www.modeemi.fi/~shd/foss/cksfv/
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-cksfv (Check SFV) can create sfv (Simple File Verification) listings and test
-already created sfv files.  Uses the crc32 checksum.
+Utility to test .sfv files. These files are commonly used to ensure
+the correct retrieval or storage of data.
+
+%description -l pl
+Narzêdzie do testowania plików .sfv. Te pliki s± czêsto u¿ywane w celu
+upewnienia siê o poprawnym przesyle danych poprzez sieæ.
 
 %prep
-%setup
-
-%patch1 -p0 -b .orig
+%setup -q
 
 %build
-make
+./configure \
+	--prefix=/usr \
+	--package-prefix=$RPM_BUILD_ROOT
+
+%{__make} \
+	CFLAGS="%{rpmcflags}"
 
 %install
-make install
+rm -rf $RPM_BUILD_ROOT
+
+%{__make} install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-, root, root)
-%doc COPYING ChangeLog README
-%prefix/bin/cksfv
+%defattr(644,root,root,755)
+%doc ChangeLog README TODO
+%attr(755,root,root) %{_bindir}/*
+%{_mandir}/man1/*
 
+%define date	%(echo `LC_ALL="C" date +"%a %b %d %Y"`)
 %changelog
-* Thu Dec 28 2000 Bryan Call  <bc@fodder.org>
-- version 1.2
-- Fixed the a problem when making a new sfv it was not being zero
-padded (found by Justin Head and Andre Tertling).
-- Added the idea, when insensitive matching is activated, it will treat
-"_" and " " equal. For example it will treat "foo_bar.txt" and
-"Foo Bar.txt" the same (suggested and patch given by Andree Borrmann).
-- Made it so it will not choke on blank lines.
+* %{date} PLD Team <feedback@pld-linux.org>
+All persons listed below can be reached at <cvs_login>@pld-linux.org
 
-* Thu May 18 2000 Bryan Call  <bc@fodder.org>
-- version 1.1
-- Added verbose to the program.  Now the program will list what file it
-is working on and the status of the file.  When it is finished it will
-display a final result, if it encountered any errors or not, and it
-will print the bell character. You can turn this off with the -q option
-(quiet).
-- Moved some functions around a some other minor stuff.
+$Log: cksfv.spec,v $
+Revision 1.2  2005/02/04 18:00:51  shd
+*** empty log message ***
 
-* Tue May 16 2000 Bryan Call  <bc@fodder.org>
-- version 1.0
-- This is the first version that has been released for public
-consumption.  Hopefully, I have worked out most of the bugs. I have
-this working on FreeBSD 3.4 and Redhat 6.1 (i386).
+Revision 1.17  2005/02/04 11:36:43  areq
+- 1.3.2
+- new URL
+
+Revision 1.16  2004/02/05 17:59:35  qboosh
+- pl fix, cosmetics
+
+Revision 1.15  2004/02/04 23:38:49  baggins
+- release 3
+- merged alpha and LFS patches (it all comes to types)
+
+Revision 1.14  2004/02/04 22:31:45  baggins
+- release 2
+- added large file support
+
+Revision 1.13  2003/08/06 16:46:54  kloczek
+- mo¿e wrescie kto¶ wykasuje to konto ?
+
+Revision 1.12  2003/05/26 16:24:48  malekith
+- massive attack: adding Source-md5
+
+Revision 1.11  2003/05/25 05:46:17  misi3k
+- massive attack s/pld.org.pl/pld-linux.org/
+
+Revision 1.10  2002/10/10 12:40:25  marcus
+- use new %%doc
+
+Revision 1.9  2002/04/25 16:05:33  arturs
+fixed a small typo
+
+Revision 1.8  2002/02/23 01:33:40  kloczek
+- adapterized.
+
+Revision 1.7  2002/02/22 23:28:45  kloczek
+- removed all Group fields translations (our rpm now can handle translating
+  Group field using gettext).
+
+Revision 1.6  2002/01/18 02:12:34  kloczek
+perl -pi -e "s/pld-list\@pld.org.pl/feedback\@pld.org.pl/"
+
+Revision 1.5  2001/11/02 15:54:16  baggins
+- added VERSION to make
+
+Revision 1.4  2001/11/01 20:35:36  areq
+- 1.3, STBR
+
+Revision 1.3  2001/10/12 14:21:13  baggins
+- release 2
+- added fixes for int/long size on alpha
+
+Revision 1.2  2001/05/02 02:43:01  qboosh
+- adapterized and made spec %%debug ready or added using %%rpm*flags macros
+
+Revision 1.1  2001/01/07 01:02:06  misiek
+new spec
