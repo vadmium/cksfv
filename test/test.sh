@@ -18,6 +18,7 @@ if test "$?" = "0" ; then
 fi
 echo test case 2 succesful
 
+# test case 3
 $cksfv a b c > tmp.sfv 2> /dev/null
 if test "$?" != "0" ; then
     echo "test case 3 unsuccesful. sfv creation failed."
@@ -29,3 +30,29 @@ if test "$?" != "0" ; then
     exit -1
 fi
 echo test case 3 succesful
+
+# test case 4
+$cksfv a d &> /dev/null
+if test "$?" == "0" ; then
+    echo "test case 3 unsuccesful. sfv creation should have failed."
+    exit -1
+fi
+echo test case 4 succesful
+
+# test case 5
+$cksfv -i -f c3.sfv &> /dev/null
+if test "$?" != "0" ; then
+    echo "test case 1 unsuccesful. in-casesensitive checking failed."
+    exit -1
+fi
+echo test case 5 succesful
+
+# test case 6
+$cksfv -q -f c1.sfv 2>/dev/null > tmpfile
+$cksfv -q -f c2.sfv 2>/dev/null >> tmpfile
+$cksfv -q -i -f c3.sfv 2>/dev/null >> tmpfile
+if test "`wc -l < tmpfile`" != "0" ; then
+    echo "test case 6 unsuccesful. tmpfile not empty."
+    exit -1
+fi
+echo test case 6 succesful
