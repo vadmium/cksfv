@@ -1,0 +1,11 @@
+cksfv (Check SFV) can create sfv (Simple File Verification) listings and test
+already created sfv files.  Uses the crc32 checksum.
+
+cksfv is pretty easy to use.  There are only three flags at the moment.  I
+plan to add more options laters so there will be more to come.  The -i flag is
+was added because there sometimes are .sfv files that have the file names
+listed all in caps.  This options will add look in the directory for filenames
+that match, not taking case into account (strcasecmp()).
+
+Right now the files can only be access via http at
+http://www.fodder.org/cksfv/.  I have a tarball and RPMs there.

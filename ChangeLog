@@ -1,0 +1,5 @@
+2000-05-16  Bryan Call  <bc@fodder.org>
+
+	* version 1.0 this is the first version that has been released for
+	public consumption.  Hopefully, I have worked out most of the bugs.
+	I have this working on FreeBSD 3.4 and Redhat 6.1 (i386).
