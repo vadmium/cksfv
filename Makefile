@@ -16,7 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-VERSION="1.2"
+VERSION="1.3"
+WEBSITE=/var/www/html/cksfv/
 
 all:
 	cd src && gmake VERSION=$(VERSION)
@@ -43,14 +44,15 @@ rpm:	dist
 	&& cp /usr/src/redhat/SRPMS/cksfv-$(VERSION)*.src.rpm ~ \
 
 full_dist: rpm
-	cp ~/cksfv-$(VERSION)*.src.rpm /home/httpd/html/cksfv/
-	cp ~/cksfv-$(VERSION)*.i386.rpm /home/httpd/html/cksfv/
-	cp ~/cksfv-$(VERSION).tar.gz /home/httpd/html/cksfv/
-	cd /home/httpd/html/cksfv/ && md5sum cksfv-$(VERSION)*.src.rpm \
+	cp ~/cksfv-$(VERSION)*.src.rpm $(WEBSITE)
+	cp ~/cksfv-$(VERSION)*.i386.rpm $(WEBSITE)
+	cp ~/cksfv-$(VERSION).tar.gz $(WEBSITE)
+	cd $(WEBSITE) && md5sum cksfv-$(VERSION)*.src.rpm \
 	cksfv-$(VERSION)*.i386.rpm cksfv-$(VERSION).tar.gz > \
 	cksfv-$(VERSION).md5 && cksfv cksfv-$(VERSION)*.src.rpm \
 	cksfv-$(VERSION)*.i386.rpm cksfv-$(VERSION).tar.gz > \
-	cksfv-$(VERSION).sfv \
+	cksfv-$(VERSION).sfv
+	cp ChangeLog README TODO INSTALL $(WEBSITE)
 
 clean:
 	rm -f *.o *~ *.core core

@@ -20,6 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 extern int  readsfv(char*, char*, int);
 extern int  newsfv(char**);

@@ -22,6 +22,7 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
+#include <stdlib.h>
 
 void pnsfv_head()
 {

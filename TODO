@@ -10,9 +10,6 @@
 
 - Make verbose by default a compile time option.
 
-- Add verbose to the program.  Show what the program is doing when checking
-  files. (done v1.1)
-
 - Option to recurse subdirectories.
 
 - More meaningfull exit values.

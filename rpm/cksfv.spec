@@ -1,4 +1,4 @@
-%define ver      1.2
+%define ver      1.3
 %define rel      0
 %define prefix   /usr
 

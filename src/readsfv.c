@@ -147,9 +147,9 @@ int find_file(char* filename, char* dir)
   }
 
   while ((dirinfo = readdir(dirp)) != NULL) {
-    for (foo = filename, bar = dirinfo->d_name; foo != NULL ||
-           bar != NULL; foo++, bar++) {
-      if (foo != bar) {
+    for (foo = filename, bar = dirinfo->d_name; *foo != '\0' ||
+           *bar != '\0'; foo++, bar++) {
+      if (*foo != *bar) {
         if (isalpha(*foo) && isalpha(*bar)) {
           if (tolower(*foo) != tolower(*bar)) {
             break;
