@@ -57,18 +57,18 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
   int check;
   struct stat st;
 
-  if (be_quiet == 0)
+  if (!QUIET)
     prsfv_head(fn);
 
   fd = fopen(fn, "r");
   if (fd == NULL) {
-    if (be_quiet != 2)
+    if (!TOTALLY_QUIET)
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
     exit(1);
   }
 
   if (chdir(dir) != 0) {
-    if (be_quiet != 2)
+    if (!TOTALLY_QUIET)
       fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
     exit(1);
   }
@@ -80,28 +80,33 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 
     /* build filename and crc from the sfv file */
     if ((end = strrchr(buf, ' ')) == NULL) {
-      fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: %s: incorrect sfv file format\n", fn);
       exit(1);
     }
     ind = ((intptr_t) end) - ((intptr_t) buf);
     if (ind >= PATH_MAX) {
-      fprintf(stderr, "cksfv: too long a name\n");
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: too long a name\n");
       exit(1);
     }
     if ((ind + 9) >= ((intptr_t) strlen(buf))) {
-      fprintf(stderr, "cksfv: too short a line (checksum missing)\n");
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: too short a line (checksum missing)\n");
       exit(1);
     }
     /* check that it's exactly 8 hexadigits */
     for (j = 1; j < 9; j++) {
       if (!isxdigit(((int) buf[ind + j]))) {
-	fprintf(stderr, "cksfv: illegal checksum (should only contain hexdigits): %s\n", &buf[ind + 1]);
+	if (!TOTALLY_QUIET)
+	  fprintf(stderr, "cksfv: illegal checksum (should only contain hexdigits): %s\n", &buf[ind + 1]);
 	exit(1);
       }
     }
     /* must be followed by a whitespace char */
     if (!isspace((int) buf[ind + 9])) {
-      fprintf(stderr, "cksfv: too long a checksum: %s\n", &buf[ind + 1]);
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: too long a checksum: %s\n", &buf[ind + 1]);
       exit(1);
     }
 
@@ -128,11 +133,12 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
     }
 
     if (strlen(filename) >= PATH_MAX) {
-      fprintf(stderr, "cksfv: filename too long\n");
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: filename too long\n");
       exit(1);
     }
 
-    if (be_quiet == 0)
+    if (!QUIET)
       fprintf(stderr, "%-49s ", filename);
 
     /* can we open the file */
@@ -146,40 +152,48 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 
     /* if the file could not be opened */
     if (file < 0) {
-      if (be_quiet == 0)
+      if (!QUIET)
 	fprintf(stderr, "%s\n", strerror(errno));
-      else if (be_quiet == 1)
+      else if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
       rval = 1;
       continue;
     }
 
     if (fstat(file, &st)) {
-      fprintf(stderr, "cksfv: can not fstat %s: %s\n", filename, strerror(errno));
+      if (!QUIET) {
+	fprintf(stderr, "can not fstat\n");
+      } else if (!TOTALLY_QUIET) {
+	fprintf(stderr, "cksfv: can not fstat %s: %s\n", filename, strerror(errno));
+      }
       rval = 1;
       goto next;
     }
     if (S_ISDIR(st.st_mode)) {
-      fprintf(stderr, "cksfv: %s: Is a directory\n", filename);
+      if (!QUIET) {
+	fprintf(stderr, "Is a directory\n");
+      } else if (!TOTALLY_QUIET) {
+	fprintf(stderr, "cksfv: %s: Is a directory\n", filename);
+      }
       rval = 1;
       goto next;
     }
 
     if (crc32(file, &val)) {
-      if (be_quiet == 0)
+      if (!QUIET)
 	fprintf(stderr, "%s\n", strerror(errno));
-      else if (be_quiet == 1)
+      else if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
       rval = 1;
     } else {
       if (val != sfvcrc) {
-	if (be_quiet == 0)
+	if (!QUIET)
 	  fprintf(stderr, "different CRC\n");
-	else if (be_quiet == 1)
+	else if (!TOTALLY_QUIET)
 	  fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
 	rval = 1;
       } else
-	if (be_quiet == 0)
+	if (!QUIET)
 	  fprintf(stderr, "OK\n");
     }
   next:
@@ -190,20 +204,21 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
   if (argc) {
     for (j = 0; j < argc; j++) {
       if (argv[j]) {
-        if (be_quiet == 0)
+        if (!QUIET) {
           fprintf(stderr, "%-49s not found in sfv\n", argv[j]);
-	else
+	} else if (!TOTALLY_QUIET) {
 	  fprintf(stderr, "cksfv: %s: not found in sfv\n", argv[j]);
+	}
 	rval = 1;
       }
     }
   }
 
-  if (be_quiet == 0) {
+  if (!QUIET) {
     if (rval == 0) {
-      printf("--------------------------------------------------------------------------------\nEverything OK\a\n");
+      fprintf(stderr, "--------------------------------------------------------------------------------\nEverything OK\a\n");
     } else {
-      printf("--------------------------------------------------------------------------------\nErrors Occurred\a\n");
+      fprintf(stderr, "--------------------------------------------------------------------------------\nErrors Occurred\a\n");
     }
   }
   return rval;
@@ -219,9 +234,12 @@ static int find_file(char *filename, char *dir)
 
   dirp = opendir(".");
   if (dirp == NULL) {
-    if (be_quiet != 2)
+    if (!QUIET) {
+      fprintf(stderr, "%s", strerror(errno));
+    } else if (!TOTALLY_QUIET) {
       fprintf(stderr, "cksfv: %s: %s\n", dir, strerror(errno));
-    return(0);
+    }
+    return 0;
   }
 
   while ((dirinfo = readdir(dirp)) != NULL) {
@@ -242,7 +260,6 @@ static int find_file(char *filename, char *dir)
     }
     if (*foo == '\0' && *bar == '\0')
       strcpy(filename, dirinfo->d_name);
-      
   }
   rewinddir(dirp);
   return 1;

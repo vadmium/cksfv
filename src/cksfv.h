@@ -17,4 +17,7 @@ void pcrc(char *fn, uint32_t val);
 int crc32(int fd, uint32_t *val);
 void prsfv_head(char *fn);
 
+#define QUIET (be_quiet >= 1)
+#define TOTALLY_QUIET (be_quiet >= 2)
+
 #endif

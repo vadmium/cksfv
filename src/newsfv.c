@@ -48,27 +48,32 @@ int newsfv(char **argv)
   while (*argv) {
     fn = *argv++;
     if ((fd = open(fn, O_RDONLY | O_LARGEFILE, 0)) < 0) {
-      fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
       continue;
     }
     if (fstat(fd, &st)) {
-      fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn, strerror(errno)); 
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn, strerror(errno)); 
       rval = 1;
       goto next;
     }
     if (S_ISDIR(st.st_mode)) {
-      fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
       rval = 1;
       goto next;
     }
     if (crc32(fd, &val)) {
-      fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
+      if (!TOTALLY_QUIET)
+	fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
     } else {
       if (use_basename) {
 	if ((tmpname = strdup(fn)) == NULL) {
-	  fprintf(stderr, "out of memory\n");
+	  if (!TOTALLY_QUIET)
+	    fprintf(stderr, "out of memory\n");
 	  exit(-1);
 	}
 	pcrc(basename(tmpname), val);

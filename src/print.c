@@ -64,7 +64,8 @@ void pfileinfo(char **argv)
 	tmpname = NULL;
 	if (use_basename) {
 	  if ((tmpname = strdup(fn)) == NULL) {
-	    fprintf(stderr, "out of memory\n");
+	    if (!TOTALLY_QUIET)
+	      fprintf(stderr, "out of memory\n");
 	    exit(-1);
 	  }
 	  fname = basename(tmpname);
@@ -119,14 +120,14 @@ void prsfv_head(char *fn)
 
 void pusage()
 {
-  fprintf(stdout, "cksfv v%s:\tBryan Call <bc@fodder.org>, and later modified by\n\t\tHeikki Orsila <heikki.orsila@iki.fi>.\n", VERSION);
-  fprintf(stdout, "\tweb:\t%s\n\n", WEBSITE);
-  fprintf(stdout, "usage: cksfv [-iq] [-C directory] [-f file.sfv] ");
-  fprintf(stdout, "[file ...]\nsupported options:\n\n");
-  fprintf(stdout, " -C\tchange to directory for processing\n");
-  fprintf(stdout, " -f\t.sfv file to verify\n");
-  fprintf(stdout, " -i\tignore case on filenames\n");
-  fprintf(stdout, " -q\tquiet, only prints error messages\n");
-  fprintf(stdout, " -v\tverbose, by default this option is on\n");
+  printf("cksfv v%s:\tBryan Call <bc@fodder.org>, and later modified by\n\t\tHeikki Orsila <heikki.orsila@iki.fi>.\n", VERSION);
+  printf("\tweb:\t%s\n\n", WEBSITE);
+  printf("usage: cksfv [-iq] [-C directory] [-f file.sfv] ");
+  printf("[file ...]\nsupported options:\n\n");
+  printf(" -C\tchange to directory for processing\n");
+  printf(" -f\t.sfv file to verify\n");
+  printf(" -i\tignore case on filenames\n");
+  printf(" -q\tquiet, only prints error messages\n");
+  printf(" -v\tverbose, by default this option is on\n");
   exit(1);
 }  
