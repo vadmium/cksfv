@@ -40,6 +40,7 @@ int newsfv(char **argv)
   char *fn;
   uint32_t val;
   char *tmpname;
+  struct stat st;
 
   pnsfv_head();
   pfileinfo(argv);
@@ -51,7 +52,16 @@ int newsfv(char **argv)
       rval = 1;
       continue;
     }
-    
+    if (fstat(fd, &st)) {
+      fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn, strerror(errno)); 
+      rval = 1;
+      goto next;
+    }
+    if (S_ISDIR(st.st_mode)) {
+      fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
+      rval = 1;
+      goto next;
+    }
     if (crc32(fd, &val)) {
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
@@ -67,6 +77,7 @@ int newsfv(char **argv)
 	pcrc(fn, val);
       }
     }
+  next:
     close(fd);
   }
 

@@ -1,3 +1,8 @@
+2005-02-21  Heikki Orsila <heikki.orsila@iki.fi>
+	* version 1.3.4-pre1
+	- consistent policy for BSD and Linux systems. Trying to checksum a
+	  directory lead to different actions.
+
 2005-02-06  Heikki Orsila <heikki.orsila@iki.fi>
         - 'make check' executes tests. 'make tests' doesn't.
 
