@@ -4,6 +4,8 @@
 	  --mandir=/usr/man/man1
 	  --compiler=/opt/experimental/gcc-4/bin/gcc
 	- fixed wording in man file (Thomas Klausner)
+	- -b option: print only basenames of the given files when creating
+	  an sfv.
 
 2005-03-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- fixed O_LARGEFILE for macosx

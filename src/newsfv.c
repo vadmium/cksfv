@@ -16,6 +16,7 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. */
 
+#include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -24,6 +25,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <libgen.h>
 
 #include "cksfv.h"
 #include "config.h"
@@ -37,6 +39,7 @@ int newsfv(char **argv)
   int fd, rval = 0;
   char *fn;
   uint32_t val;
+  char *tmpname;
 
   pnsfv_head();
   pfileinfo(argv);
@@ -48,12 +51,22 @@ int newsfv(char **argv)
       rval = 1;
       continue;
     }
-
+    
     if (crc32(fd, &val)) {
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
-    } else
-      pcrc(fn, val);
+    } else {
+      if (use_basename) {
+	if ((tmpname = strdup(fn)) == NULL) {
+	  fprintf(stderr, "out of memory\n");
+	  exit(-1);
+	}
+	pcrc(basename(tmpname), val);
+	free(tmpname);
+      } else {
+	pcrc(fn, val);
+      }
+    }
     close(fd);
   }
 

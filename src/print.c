@@ -23,7 +23,9 @@
 #include <errno.h>
 #include <time.h>
 #include <stdlib.h>
+#include <libgen.h>
 
+#include "cksfv.h"
 #include "config.h"
 
 #define WEBSITE "http://www.iki.fi/shd/foss/cksfv/"
@@ -46,21 +48,37 @@ void pnsfv_head()
 
 void pfileinfo(char **argv)
 {
-  char          *fn;
-  struct stat   sb;
-  struct tm     *timeinfo;
-  
+  char *fn;
+  struct stat sb;
+  struct tm *timeinfo;
+  char *tmpname;
+  char *fname;
+
   printf(";\n");
   
   while(*argv) {
     fn = *argv++;
     if (!(stat(fn, &sb))) {
       if (!S_ISDIR(sb.st_mode)) {
+
+	tmpname = NULL;
+	if (use_basename) {
+	  if ((tmpname = strdup(fn)) == NULL) {
+	    fprintf(stderr, "out of memory\n");
+	    exit(-1);
+	  }
+	  fname = basename(tmpname);
+	} else {
+	  fname = fn;
+	}
+
 	timeinfo = localtime(&sb.st_mtime);
 	printf(";%13lu  %02d:%02d.%02d %02d-%02d-%02d %s\n",
 	       (unsigned long) sb.st_size, timeinfo->tm_hour, timeinfo->tm_min,
 	       timeinfo->tm_sec,
-	       timeinfo->tm_year+1900, timeinfo->tm_mon+1, timeinfo->tm_mday, fn);
+	       timeinfo->tm_year+1900, timeinfo->tm_mon+1, timeinfo->tm_mday, fname);
+	if (use_basename)
+	  free(tmpname);
       }
     }
   }
