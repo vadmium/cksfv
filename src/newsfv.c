@@ -22,6 +22,9 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 extern void pnsfv_head();
 extern void pfileinfo(char**);
@@ -40,7 +43,7 @@ int newsfv(char **argv)
   
   while (*argv) {
     fn = *argv++;
-    if ((fd = open(fn, O_RDONLY, 0)) < 0) {
+    if ((fd = open(fn, O_RDONLY | O_LARGEFILE, 0)) < 0) {
       fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;
       continue;

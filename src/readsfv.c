@@ -29,7 +29,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 
-extern int  crc32(int, uint32_t *, unsigned long*);
+extern int crc32(int fd, uint32_t *main_val, uint64_t *main_len);
 extern void prsfv_head(char*);
 
 int find_file(char*, char*);
@@ -40,7 +40,8 @@ int readsfv(char *fn, char *dir, int nocase)
   FILE          *fd;
   char          buf[512], *end, filename[512], crc[9], path[256];
   int           file, rval = 0;
-  unsigned long len, sfvcrc;
+  uint64_t len;
+  uint32_t sfvcrc;
   uint32_t val;
 
   
@@ -107,7 +108,7 @@ int readsfv(char *fn, char *dir, int nocase)
           fprintf(stderr, "cksfv: %s: %s\n", filename, strerror(errno));
         rval = 1;
       } else {
-        if (((unsigned long) val) != sfvcrc) {
+        if (val != sfvcrc) {
           if (quiet == 0)
             fprintf(stderr, "different CRC\n");
           else if (quiet == 1)

@@ -18,6 +18,9 @@
 
 #include <stdint.h>
 #include <unistd.h>
+#include <errno.h>
+
+extern int errno;
 
 #define BUFFERSIZE 16384   /* (16k) buffer size for reading from the file */
 
@@ -89,17 +92,26 @@ static const uint32_t crctable[256] = {
 };
 
 
-int crc32(register int fd, uint32_t *main_val, unsigned long *main_len)
+int crc32(int fd, uint32_t *main_val, uint64_t *main_len)
 {
-  char                  buf[BUFFERSIZE], *p;
-  long                  len = 0, nr;
-  uint32_t              crc = ~0, crc32_total = ~0;
-	
-  while ((nr = read(fd, buf, sizeof(buf))) > 0)
+  char buf[BUFFERSIZE], *p;
+  uint64_t len = 0;
+  int nr;
+  uint32_t crc = ~0, crc32_total = ~0;
+
+  while (1) {
+    if ((nr = read(fd, buf, sizeof(buf))) < 0) {
+      if (errno == EINTR || errno == EAGAIN)
+	continue;
+      break;
+    }
+    if (nr == 0)
+      break;
     for (len += nr, p = buf; nr--; ++p) {
       crc = (crc >> 8) ^ crctable[(crc ^ *p) & 0xff];
       crc32_total = (crc >> 8) ^ crctable[(crc32_total ^ *p) & 0xff];
     }
+  }
   if (nr < 0)
     return 1;
 
