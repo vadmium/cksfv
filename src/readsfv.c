@@ -30,6 +30,10 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#ifndef PATH_MAX
+#define PATH_MAX (512)
+#endif
+
 extern int crc32(int fd, uint32_t *main_val, uint64_t *main_len);
 extern void prsfv_head(char*);
 
@@ -40,7 +44,7 @@ extern int  quiet;
 int readsfv(char *fn, char *dir, int nocase)
 {
   FILE *fd;
-  char buf[PATH_MAX + 256];
+  char buf[PATH_MAX + 256]; /* enough for name and checksum */
   char *filename;
   char *end;
   int file, rval = 0;
@@ -50,10 +54,9 @@ int readsfv(char *fn, char *dir, int nocase)
   int ind;
   int j;
 
-  if (quiet == 0) {
+  if (quiet == 0)
     prsfv_head(fn);
-  }
-  
+
   fd = fopen(fn, "r");
   if (fd == NULL) {
     if (quiet != 2)
@@ -88,7 +91,7 @@ int readsfv(char *fn, char *dir, int nocase)
     }
     /* check that it's exactly 8 hexadigits */
     for (j = 1; j < 9; j++) {
-      if (!isxdigit(buf[ind + j])) {
+      if (!isxdigit(((int) buf[ind + j]))) {
 	fprintf(stderr, "cksfv: illegal checksum (should only contain hexdigits): %s\n", &buf[ind + 1]);
 	exit(1);
       }
@@ -175,8 +178,8 @@ static int find_file(char* filename, char* dir)
     for (foo = filename, bar = dirinfo->d_name; *foo != '\0' ||
            *bar != '\0'; foo++, bar++) {
       if (*foo != *bar) {
-        if (isalpha(*foo) && isalpha(*bar)) {
-          if (tolower(*foo) != tolower(*bar)) {
+        if (isalpha((int) *foo) && isalpha((int) *bar)) {
+          if (tolower((int) *foo) != tolower((int) *bar)) {
             break;
           }
         } else {
