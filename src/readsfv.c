@@ -17,7 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. */
 
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -29,6 +28,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <stdint.h>
 
 #ifndef PATH_MAX
 #define PATH_MAX (512)
