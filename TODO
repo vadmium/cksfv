@@ -24,3 +24,8 @@ bc:
 
 shd:
 - Remove spam messages
+
+- fix rpm creation
+
+- add deb support
+

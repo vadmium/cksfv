@@ -16,12 +16,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-PROG=		cksfv
-CFLAGS2=	-Wall -Werror -O2 -g $(CFLAGS)
-SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
+VERSION="{VERSION}"
+BINDIR="{BINDIR}"
+MANDIR="{MANDIR}"
 
-$(PROG): $(SRCS)
-	gcc -DVERSION=\"$(VERSION)\" $(CFLAGS2) -o $(PROG) $(SRCS) $(LDFLAGS)
+all:
+	$(MAKE) -C src VERSION=$(VERSION)
+
+install:	
+	mkdir -p $(BINDIR) $(MANDIR)
+	install src/cksfv $(BINDIR)
+	install cksfv.1 $(MANDIR)
 
 clean:
-	rm -f *.o *~ *.core core $(PROG)
+	rm -f *.o *~ *.core core
+	rm -f rpm/*.o rpm/*~ rpm/*.core rpm/core
+	cd src && $(MAKE) clean

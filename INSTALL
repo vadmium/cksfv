@@ -1,14 +1,6 @@
 Installation Documentation:
 
 ##############################################################################
-Linux and RPMs
-##############################################################################
-The easiest was for Linux users is to install the RPM. You can download the
-latest RPM from http://www.fodder.org/cksfv.  After downloading the RPM su to
-root and type:
-        # rpm -Uvh cksfv-*.rpm
-
-##############################################################################
 Compile your own
 ##############################################################################
 If you want to compile your own and install it yourself all you need to do is:
@@ -16,9 +8,11 @@ If you want to compile your own and install it yourself all you need to do is:
 1. download the latest source at http://www.fodder.org/cksfv.
 2. untar and go into the new directory:
         $ tar zxf cksfv-*.tar.gz; cd cksfv-*
-3. make the program:
+3. configure the program
+	$ ./configure
+4. compile the program:
         $ gmake
-4. install the program as root:
+5. install the program as root:
         # gmake install
 
 ##############################################################################
