@@ -20,10 +20,10 @@ VERSION="1.3.1"
 WEBSITE=/var/www/html/cksfv/
 
 all:
-	cd src && gmake VERSION=$(VERSION)
+	$(MAKE) -C src VERSION=$(VERSION)
 
 install:
-	cd src && gmake VERSION=$(VERSION) install
+	$(MAKE) -C src VERSION=$(VERSION) install
 
 dist:
 	gmake clean

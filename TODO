@@ -1,3 +1,4 @@
+bc:
 - Add the ability to have a comments file when creating .sfv files.
 
 - Use automake for the build.
@@ -20,3 +21,6 @@
 
 - Ability to check specific files by doing "cksfv -f test.sfv test1.file
   test2.file".
+
+shd:
+- Remove spam messages
