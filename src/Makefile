@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-CC=		gcc
+CC=		/usr/bin/gcc-2.95
 PROG=		cksfv
 CFLAGS=		-Wall -O2 -D_LARGEFILE64_SOURCE -I. 
 SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
