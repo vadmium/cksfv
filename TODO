@@ -15,6 +15,3 @@
 - add deb support
 
 - exit with error on first false checksum or fault
-
-- strip paths feature: cksfv /foo/bar/* generates checksums with filenames
-  that have /foo/bar/ stripped (ie. basenamed filenames)

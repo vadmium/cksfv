@@ -1,2 +1,6 @@
-Current maintainer: Heikki Orsila <heikki.orsila@iki.fi>
-Original author: Bryan Call <bc@fodder.org> (MAY NOT BE REACHABLE ANYMORE)
+Heikki Orsila <heikki.orsila@iki.fi>: current maintainer
+Bryan Call <bc@fodder.org>: original author
+
+Minor modifications:
+Dieter Baron <dillo@giga.or.at>: checksuming for a subset of files in sfv
+Tobias Nygren <tnn@netilium.org>: remove useless computations from crc32()

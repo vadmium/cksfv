@@ -1,4 +1,8 @@
 2005-03-04  Heikki Orsila <heikki.orsila@iki.fi>
+	* version 1.3.3
+	- lots of changes. see previous changelog entries.
+
+2005-03-04  Heikki Orsila <heikki.orsila@iki.fi>
         - configure script now ignore unknown arguments (but gives a warning)
 	- configure allows setting mandir and compiler. Examples:
 	  --mandir=/usr/man/man1

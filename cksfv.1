@@ -5,7 +5,7 @@
 cksfv \- tests and creates simple file verification (SFV) listings
 .SH SYNOPSIS
 .B cksfv
-.I "[-iq] [-C directory] [-f file.sfv] [file ...]"
+.I "[-biq] [-C directory] [-f file.sfv] [file ...]"
 .br
 .SH "DESCRIPTION"
 Some files that you download will come with a .sfv file.
@@ -25,9 +25,12 @@ be used for compatibility with other systems.
 .SH OPTIONS
 These options are available
 .TP
+.B \-b
+strip dirnames from filenames that are checksumed. loads the files from
+original positions, but prints only basenames to catalogue in sfv file.
+.TP
 .B \-C
 change to directory for processing
-.TP
 .B \-f
  .sfv file to verify
 .TP
@@ -63,7 +66,14 @@ Check checksums of files 'foo' and 'bar' listed in 'files.sfv':
 .ft B
 cksfv -f files.sfv foo bar
 
+.ft R
+Create checksums of files matching /foo/bar/* and strip dirnames away:
+.ft B
+cksfv -b /foo/bar/* > files.sfv
+
 .SH "SEE ALSO"
+.BR basename (1)
+.BR dirname (1)
 .BR md5sum (1)
 .BR sha1sum (1)
 

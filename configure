@@ -42,8 +42,9 @@ if test -n "$packageprefix" ; then
 fi
 
 bindir="$packageprefix$prefix/bin"
+
 if test "$have_mandir" = "no" ; then
-    mandir="$prefix/share/man/man1"
+    mandir="$packageprefix$prefix/share/man/man1"
 else
     mandir="$packageprefix$mandir"
 fi
