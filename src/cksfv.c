@@ -28,7 +28,7 @@
 #endif
 
 extern int  readsfv(char *filename, char *dir, int nocase, int quiet);
-extern int  newsfv(char**);
+extern int  newsfv(char **);
 extern void pusage();
 
 int main(int argc, char *argv[])
