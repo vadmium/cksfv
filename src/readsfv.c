@@ -45,7 +45,7 @@ extern void prsfv_head(char *fn);
 static int find_file(char *filename, char *dir, int quiet);
 
 
-int readsfv(char *fn, char *dir, int nocase, int quiet)
+int readsfv(char *fn, char *dir, int nocase, int quiet, int argc, char **argv)
 {
   FILE *fd;
   char buf[PATH_MAX + 256]; /* enough for name and checksum */
@@ -56,6 +56,7 @@ int readsfv(char *fn, char *dir, int nocase, int quiet)
   uint32_t val;
   int ind;
   int j;
+  int check;
 
   if (quiet == 0)
     prsfv_head(fn);
@@ -110,6 +111,23 @@ int readsfv(char *fn, char *dir, int nocase, int quiet)
     sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
 
     filename = buf;
+
+    if (argc) {
+      check = 0;
+      for (j = 0; j < argc; j++) {
+	if (argv[j] == NULL)
+	  continue;
+	if ((nocase != 0 && strcasecmp(argv[j], filename) == 0) ||
+	    (nocase == 0 && strcmp(argv[j], filename) == 0)) {
+	  check = 1;
+	  argv[j] = NULL;
+	  break;
+	}
+      }
+      if (check == 0)
+	continue;
+    }
+
     if (strlen(filename) >= PATH_MAX) {
       fprintf(stderr, "cksfv: filename too long\n");
       exit(1);
@@ -157,6 +175,18 @@ int readsfv(char *fn, char *dir, int nocase, int quiet)
     close(file);
   }
   fclose(fd);
+
+  if (argc) {
+    for (j = 0; j < argc; j++) {
+      if (argv[j]) {
+        if (quiet == 0)
+          fprintf(stderr, "%-49s not found in sfv\n", argv[j]);
+	else
+	  fprintf(stderr, "cksfv: %s: not found in sfv\n", argv[j]);
+	rval = 1;
+      }
+    }
+  }
 
   if (quiet == 0) {
     if (rval == 0) {

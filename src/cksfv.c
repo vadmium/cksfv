@@ -27,7 +27,7 @@
 #define PATH_MAX (512)
 #endif
 
-extern int  readsfv(char *filename, char *dir, int nocase, int quiet);
+extern int  readsfv(char *filename, char *dir, int nocase, int quiet, int argc, char **argv);
 extern int  newsfv(char **);
 extern void pusage();
 
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
   argv += optind;
 
   if (rsfvflag == 1) {
-    rval = readsfv(sfvfile, dir, nocase, quiet);
+    rval = readsfv(sfvfile, dir, nocase, quiet, argc, argv);
   } else {
     if (argc < 1) {
       pusage();
