@@ -92,7 +92,7 @@ static const uint32_t crctable[256] = {
 };
 
 
-int crc32(int fd, uint32_t *main_val, uint64_t *main_len)
+int crc32(int fd, uint32_t *main_val)
 {
   char buf[BUFFERSIZE], *p;
   uint64_t len = 0;
@@ -116,7 +116,6 @@ int crc32(int fd, uint32_t *main_val, uint64_t *main_len)
   if (nr < 0)
     return 1;
 
-  *main_len = len;
   *main_val = ~crc;
   return 0;
 }
