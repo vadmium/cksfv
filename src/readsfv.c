@@ -35,13 +35,12 @@
 #endif
 
 extern int crc32(int fd, uint32_t *val, uint64_t *len);
-extern void prsfv_head(char *);
+extern void prsfv_head(char *fn);
 
-static int find_file(char *, char *);
+static int find_file(char *filename, char *dir, int quiet);
 
-extern int quiet;
 
-int readsfv(char *fn, char *dir, int nocase)
+int readsfv(char *fn, char *dir, int nocase, int quiet)
 {
   FILE *fd;
   char buf[PATH_MAX + 256]; /* enough for name and checksum */
@@ -113,7 +112,7 @@ int readsfv(char *fn, char *dir, int nocase)
     if ((file = open(filename, O_RDONLY | O_LARGEFILE, 0)) < 0) {
       if (nocase == 1) {
 	/* try to search for it if ingore case is set */
-	find_file(filename, dir);
+	find_file(filename, dir, quiet);
 	file = open(filename, O_RDONLY | O_LARGEFILE, 0);
       }
     }
@@ -160,13 +159,13 @@ int readsfv(char *fn, char *dir, int nocase)
 }
 
 
-static int find_file(char* filename, char* dir)
+static int find_file(char *filename, char *dir, int quiet)
 {
   DIR *dirp;
   struct dirent *dirinfo;
   char *foo;
   char *bar;
-  
+
   dirp = opendir(".");
   if (dirp == NULL) {
     if (quiet != 2)

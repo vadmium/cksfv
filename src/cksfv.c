@@ -21,18 +21,22 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
-extern int  readsfv(char*, char*, int);
+#ifndef PATH_MAX
+#define PATH_MAX (512)
+#endif
+
+extern int  readsfv(char *filename, char *dir, int nocase, int quiet);
 extern int  newsfv(char**);
 extern void pusage();
-
-int quiet = 0; /* 1 if you want the program to be quiet by default */
 
 int main(int argc, char *argv[])
 {
   int   ch, rval;
   int   nocase = 0, rsfvflag = 0;
-  char  dir[256] = ".", sfvfile[256];
+  char  dir[PATH_MAX + 1] = ".", sfvfile[PATH_MAX + 1];
+  int   quiet = 0;
 
   while ((ch = getopt(argc, argv, "iC:f:qv")) != -1)
     switch (ch) {
@@ -40,10 +44,12 @@ int main(int argc, char *argv[])
       nocase = 1;
       break;
     case 'C':
-      strncpy(dir, optarg, 256);
+      strncpy(dir, optarg, sizeof(dir));
+      dir[sizeof(dir) - 1] = 0;
       break;  
     case 'f':
-      strncpy(sfvfile, optarg, 256);
+      strncpy(sfvfile, optarg, sizeof(sfvfile));
+      sfvfile[sizeof(sfvfile) - 1] = 0;
       rsfvflag = 1;
       break;
     case 'q':
@@ -60,7 +66,7 @@ int main(int argc, char *argv[])
   argv += optind;
 
   if (rsfvflag == 1) {
-    rval = readsfv(sfvfile, dir, nocase);
+    rval = readsfv(sfvfile, dir, nocase, quiet);
   } else {
     if (argc < 1) {
       pusage();

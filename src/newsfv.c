@@ -57,5 +57,5 @@ int newsfv(char **argv)
     close(fd);
   }
 
-  return(rval);
+  return rval;
 }
