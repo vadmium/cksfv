@@ -27,3 +27,5 @@ shd:
 
 - add deb support
 
+- exit with error on first false checksum or fault
+
