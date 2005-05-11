@@ -1,3 +1,10 @@
+2005-05-11  Heikki Orsila <heikki.orsila@iki.fi>
+	- feature that prints out sfv files with broken files and broken
+	  sfv files when recursive sfv checking is enabled. this is useful
+	  because print out in recursive mode can be long. one sees those
+	  sfv files that failed at the end of the output. Thanks to
+	  Travis Poppe <tlp@liquidx.org> for suggesting this feature (shd)
+
 2005-04-04  Heikki Orsila <heikki.orsila@iki.fi>
         * version 1.3.4
 	- compatibility fixes

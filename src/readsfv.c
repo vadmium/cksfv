@@ -43,6 +43,29 @@
 static int find_file(char *filename, char *dir);
 
 
+char **sfv_broken_list = NULL;
+int sfv_broken = 0;
+
+
+/* add broken sfv to the list */
+static void add_broken_entry(char *fn, char *dir)
+{
+  char sfvname[PATH_MAX + 1];
+  char **new_broken;
+
+  sfv_broken++;
+  new_broken = realloc(sfv_broken_list, sfv_broken * sizeof(char **));
+  if (new_broken) {
+    sfv_broken_list = new_broken;
+    snprintf(sfvname, sizeof(sfvname), "%s/%s", dir, fn);
+    sfv_broken_list[sfv_broken - 1] = strdup(sfvname);
+  } else {
+    fprintf(stderr, "cksfv: very annoying... no space for broken list...\n");
+    sfv_broken--;
+  }
+}
+
+
 int readsfv(char *fn, char *dir, int argc, char **argv)
 {
   FILE *fd;
@@ -223,10 +246,15 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
       fprintf(stderr, "--------------------------------------------------------------------------------\nErrors Occurred\a\n");
     }
   }
+
+  if (rval)
+    add_broken_entry(fn, dir);
+
   return rval;
 
  error:
   fclose(fd);
+  add_broken_entry(fn, dir);
   return 1;
 }
 

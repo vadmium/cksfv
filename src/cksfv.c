@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
   int   rsfvflag = 0;
   char  dir[PATH_MAX + 1] = ".", sfvfile[PATH_MAX + 1];
   int follow = 0;
+  int i;
 
   while ((ch = getopt(argc, argv, "iC:f:qvbrL")) != -1)
     switch (ch) {
@@ -92,5 +93,10 @@ int main(int argc, char *argv[])
     rval = newsfv(argv);
   }
 
+  if (!TOTALLY_QUIET && recurse && sfv_broken) {
+    fprintf(stderr, "\nList of sfv files with broken files (or broken sfv files):\n");
+    for (i = 0; i < sfv_broken; i++)
+      fprintf(stderr, "%s\n", sfv_broken_list[i]);
+  }
   exit(rval);
 }
