@@ -82,6 +82,10 @@ gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
 if test "$?" != "0" ; then
     # no stdint.h. obsolete environment. but we may hope
     echo "#include <unistd.h>" >> src/config.h
+    mname="`uname`"
+    if test "$mname" = "OpenBSD" ; then
+	echo "#include <inttypes.h>" >> src/config.h
+    fi
     has_stdint="no (you need luck to succeed)"
 else
     echo "#include <stdint.h>" >> src/config.h
