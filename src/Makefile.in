@@ -21,7 +21,7 @@ PROG=		cksfv
 CFLAGS=		-Wall -O2 -D_LARGEFILE64_SOURCE -I. {CFLAGS}
 SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
 
-$(PROG): $(SRCS)
+$(PROG): $(SRCS) config.h
 	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LDFLAGS)
 
 clean:

@@ -80,16 +80,32 @@ int main(void) {return 0;}
 EOF
 gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
 if test "$?" != "0" ; then
-    # no stdint.h. obsolete environment. but we may hope
-    echo "#include <unistd.h>" >> src/config.h
-    mname="`uname`"
-    if test "$mname" = "OpenBSD" ; then
-	echo "#include <inttypes.h>" >> src/config.h
-    fi
-    has_stdint="no (you need luck to succeed)"
+    has_stdint="no"
 else
-    echo "#include <stdint.h>" >> src/config.h
     has_stdint="yes"
+fi
+
+cat > tmpfile <<EOF
+#include <inttypes.h>
+#include <stdlib.h>
+#include <stdio.h>
+int main(void) {return 0;}
+EOF
+gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
+if test "$?" != "0"; then
+    has_inttypes="no"
+else
+    has_inttypes="yes"
+fi
+
+if test "$has_stdint" = "yes" ; then
+    echo "#include <stdint.h>" >> src/config.h
+elif test "$has_inttypes" = "yes"; then
+    echo "#include <inttypes.h>" >> src/config.h
+else
+    # no stdint.h or inttypes.h. obsolete environment. but we may hope..
+    echo "#include <unistd.h>" >> src/config.h
+    has_stdint="no (compilation will probably fail)"
 fi
 
 echo "#endif" >> "src/config.h"
@@ -101,5 +117,6 @@ echo "  binary directory:          $bindir"
 echo "  man directory:             $mandir"
 echo "  compiler:                  $compiler"
 echo "  has stdint.h:              $has_stdint"
+echo "  has inttypes.h:            $has_inttypes"
 echo ""
 echo "configure succesful."
