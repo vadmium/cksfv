@@ -16,16 +16,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-BINDIR="{BINDIR}"
-MANDIR="{MANDIR}"
+BINDIR={BINDIR}
+MANDIR={MANDIR}
 
 all:	
 	cd src && $(MAKE)
 
 install:	
-	mkdir -p $(BINDIR) $(MANDIR)/man1/
-	install src/cksfv $(BINDIR)
-	install cksfv.1 $(MANDIR)/man1/
+	mkdir -p "$(BINDIR)" "$(MANDIR)/man1/"
+	install src/cksfv "$(BINDIR)"
+	install cksfv.1 "$(MANDIR)/man1/"
 
 clean:	
 	rm -f *.o *~ *.core core
