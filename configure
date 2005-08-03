@@ -100,6 +100,8 @@ EOF
     fi
 fi
 
+rm -f tmpfile tmpfile.c
+
 if test "$has_stdint" = "yes" ; then
     echo "#include <stdint.h>" >> src/config.h
 elif test "$has_inttypes" = "yes"; then
