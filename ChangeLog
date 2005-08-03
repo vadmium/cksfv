@@ -3,6 +3,8 @@
 	  detected if stdint.h doesn't exist. It is possible that this bug
 	  hasn't affected any system. Thanks go to Stefan Alfresson for
 	  fixing this <alfs@debian.org>.
+	- Added optimization into the configure script. Now inttypes.h is not
+	  checked if stdint.h exists.
 
 2005-06-07  Heikki Orsila <heikki.orsila@iki.fi>
 	* version 1.3.5
