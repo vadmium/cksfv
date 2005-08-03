@@ -1,3 +1,9 @@
+2005-08-03  Heikki Orsila <heikki.orsila@iki.fi>
+	- A configure script bug was fixed that prevented inttypes.h from being
+	  detected if stdint.h doesn't exist. It is possible that this bug
+	  hasn't affected any system. Thanks go to Stefan Alfresson for
+	  fixing this <alfs@debian.org>.
+
 2005-06-07  Heikki Orsila <heikki.orsila@iki.fi>
 	* version 1.3.5
 	- recursive SFV checking support by Travis Poppe <tlp@liquidx.org>

@@ -85,7 +85,7 @@ else
     has_stdint="yes"
 fi
 
-cat > tmpfile <<EOF
+cat > tmpfile.c <<EOF
 #include <inttypes.h>
 #include <stdlib.h>
 #include <stdio.h>
