@@ -1,8 +1,8 @@
 2005-08-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- A configure script bug was fixed that prevented inttypes.h from being
-	  detected if stdint.h doesn't exist. It is possible that this bug
-	  hasn't affected any system. Thanks go to Stefan Alfresson for
-	  fixing this <alfs@debian.org>.
+	  detected if stdint.h doesn't exist. This bug seems affect some
+	  Solaris systems (they had inttypes.h but no stdint.h). Thanks to
+	  Stefan Alfredsson <alfs@debian.org> for the fix.
 	- Added optimization into the configure script. Now inttypes.h is not
 	  checked if stdint.h exists.
 
