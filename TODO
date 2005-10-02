@@ -4,8 +4,6 @@
 
 - Make verbose by default a compile time option.
 
-- Option to recurse subdirectories (supported for reading SFV, but not writing).
-
 - More meaningfull exit values.
 
 - Show an estimated time to complete checks and the creation of new sfv files.
@@ -15,3 +13,5 @@
 - add deb support
 
 - exit with error on first false checksum or fault
+
+- Fix case insensitive file scanning. Affects names with / in sfv files.
