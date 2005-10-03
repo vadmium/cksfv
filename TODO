@@ -15,5 +15,3 @@
 - exit with error on first false checksum or fault
 
 - Fix case insensitive file scanning. Affects names with / in sfv files.
-
-- Make cksfv help match options that are really implemented.

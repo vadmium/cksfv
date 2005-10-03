@@ -128,14 +128,15 @@ void pusage()
 {
   printf("cksfv v%s:\tBryan Call <bc@fodder.org>, and later modified by\n\t\tHeikki Orsila <heikki.orsila@iki.fi>.\n", VERSION);
   printf("\tweb:\t%s\n\n", WEBSITE);
-  printf("usage: cksfv [-iq] [-C directory] [-f file.sfv] ");
+  printf("usage: cksfv [-biq] [-C directory] [-f file.sfv] ");
   printf("[file ...]\nsupported options:\n\n");
+  printf(" -b\tprint only the basename when creating an sfv (no directory component)\n");
   printf(" -C\tchange to directory for processing\n");
   printf(" -f\t.sfv file to verify\n");
   printf(" -i\tignore case on filenames\n");
+  printf(" -L\tfollow symlinks in recursive mode\n");
   printf(" -q\tquiet, only prints error messages\n");
   printf(" -r\trecursively check .sfv files in subdirectories\n");
-  printf(" -L\tfollow symlinks in recursive mode\n");
   printf(" -v\tverbose, by default this option is on\n");
   exit(1);
 }

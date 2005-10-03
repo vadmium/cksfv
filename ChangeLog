@@ -1,7 +1,8 @@
 2005-10-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- Fixed a stack corruption error and localtime error in prsfv_head() /
 	  print.c. The fix was provided by T. Farago <darkvater@openttd.org>.
-
+	- Fixed command line help. It missed explanation of -b option.
+	
 2005-08-08  Heikki Orsila <heikki.orsila@iki.fi>
 	* version 1.3.6
 	- Portability fix for Solaris (Stefan Alfredsson <alfs@debian.org>)
