@@ -47,9 +47,7 @@ void pnsfv_head()
   printf("%02d-%02d-%02d at %02d:%02d.%02d\n", timeinfo->tm_year+1900,
          timeinfo->tm_mon+1, timeinfo->tm_mday, timeinfo->tm_hour,
          timeinfo->tm_min, timeinfo->tm_sec);
-  printf("; Originally Written by Bryan Call <bc@fodder.org>\n");
-  printf("; New versions maintained by Heikki Orsila <heikki.orsila@iki.fi>\n");
-  printf("; New versions can be obtained from %s\n", WEBSITE);
+  printf("; Project web site: %s\n", WEBSITE);
 }
 
 void pfileinfo(char **argv)

@@ -1,15 +1,19 @@
 2005-10-23  Heikki Orsila <heikki.orsila@iki.fi>
+	* Version 1.3.7
 	- Fixed INSTALL documentation. The INSTALL file documented the
 	  old behaviour, where editing Makefile was required for installing
 	  to an alternative path.
 	- Fixed 'configure --help' to report usage properly. '--prefix dir' =>
 	  '--prefix=dir'.
+	- Shortened cksfv output to print only 2 lines to the beginning of a
+	  newly created sfv file. cksfv version, date, time, and the project
+	  web site URL.
 
 2005-10-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- Fixed a stack corruption error and localtime error in prsfv_head() /
 	  print.c. The fix was provided by T. Farago <darkvater@openttd.org>.
 	- Fixed command line help. It missed explanation of -b option.
-	
+
 2005-08-08  Heikki Orsila <heikki.orsila@iki.fi>
 	* version 1.3.6
 	- Portability fix for Solaris (Stefan Alfredsson <alfs@debian.org>)
