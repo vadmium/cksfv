@@ -29,12 +29,12 @@ for opt in "$@" ; do
 	--help)
 		echo ""
 		echo "valid options are:"
-		echo "--prefix dir           install to prefix 'dir'"
- 		echo "--package-prefix dest  pretend to install to the prefix,"
+		echo "--prefix=dir           install to prefix 'dir'"
+ 		echo "--package-prefix=dest  pretend to install to the prefix,"
 		echo "                       but copy files to 'dest/prefix' on make install"
-		echo "--bindir dir           install program to 'dir' (PREFIX/bin/)"
-		echo "--mandir dir           install man page to 'dir' (PREFIX/share/man/)"
-		echo "--compiler program     compile with 'program' (gcc)"
+		echo "--bindir=dir           install program to 'dir' (PREFIX/bin/)"
+		echo "--mandir=dir           install man page to 'dir' (PREFIX/share/man/)"
+		echo "--compiler=program     compile with 'program' (gcc)"
 		exit
 		;;
         *)

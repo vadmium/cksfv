@@ -1,22 +1,27 @@
-Installation Documentation:
+1. Unpack the source somewhere, and go to the new directory.
 
-##############################################################################
-Compile your own
-##############################################################################
-If you want to compile your own and install it yourself all you need to do is:
+2. Configure the program:
 
-1. download the latest source at http://www.fodder.org/cksfv.
-2. untar and go into the new directory:
-        $ tar zxf cksfv-*.tar.gz; cd cksfv-*
-3. configure the program
 	$ ./configure
-4. compile the program:
-        $ gmake
-5. install the program as root:
-        # gmake install
 
-##############################################################################
-Configure the installation path
-##############################################################################
-The default path for installation is /usr/local/bin.  If you want to change the
-path for installation, edit the Makfile under the source directory.
+You may use ./configure --help to find out which possible configure parameters
+are possible. Most important parameters are:
+
+ --prefix=dir		Set installation path prefix (default is /usr/local)
+ --package-prefix=dir	Prefix installed file names with
+
+3. Compile the program:
+
+	$ make
+
+4. To install the program, type as root:
+
+	# make install
+
+Optionally you may run some tests to verify that the program works correctly
+with your system. After compiling the program, you may issue:
+
+	$ make check
+
+'make check' will report if the compiled program fails any standard tests.
+

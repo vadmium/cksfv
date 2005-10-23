@@ -1,3 +1,10 @@
+2005-10-23  Heikki Orsila <heikki.orsila@iki.fi>
+	- Fixed INSTALL documentation. The INSTALL file documented the
+	  old behaviour, where editing Makefile was required for installing
+	  to an alternative path.
+	- Fixed 'configure --help' to report usage properly. '--prefix dir' =>
+	  '--prefix=dir'.
+
 2005-10-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- Fixed a stack corruption error and localtime error in prsfv_head() /
 	  print.c. The fix was provided by T. Farago <darkvater@openttd.org>.
