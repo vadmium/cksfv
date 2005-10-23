@@ -8,6 +8,9 @@
 	- Shortened cksfv output to print only 2 lines to the beginning of a
 	  newly created sfv file. cksfv version, date, time, and the project
 	  web site URL.
+	- A stack corruption and localtime error fix by
+	  T. Farago <darkvater@openttd.org>
+	- Added -b option to the command line help.
 
 2005-10-03  Heikki Orsila <heikki.orsila@iki.fi>
 	- Fixed a stack corruption error and localtime error in prsfv_head() /
