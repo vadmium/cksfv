@@ -22,7 +22,7 @@ MANDIR={MANDIR}
 all:	
 	cd src && $(MAKE)
 
-install:	
+install:	all
 	mkdir -p "$(BINDIR)" "$(MANDIR)/man1/"
 	install src/cksfv "$(BINDIR)"
 	install cksfv.1 "$(MANDIR)/man1/"
@@ -32,5 +32,5 @@ clean:
 	rm -f rpm/*.o rpm/*~ rpm/*.core rpm/core
 	cd src && $(MAKE) clean
 
-check:	
+check:	all
 	cd test && ./test.sh

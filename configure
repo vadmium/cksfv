@@ -81,7 +81,7 @@ cat > tmpfile.c <<EOF
 #include <stdio.h>
 int main(void) {return 0;}
 EOF
-gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
+$compiler -o tmpfile tmpfile.c >/dev/null 2>/dev/null
 if test "$?" = "0" ; then
     has_stdint="yes"
 fi
@@ -94,7 +94,7 @@ if test "$has_stdint" = "no" ; then
 #include <stdio.h>
 int main(void) {return 0;}
 EOF
-    gcc -Wall -O2 -o tmpfile tmpfile.c >/dev/null 2>/dev/null
+    $compiler -o tmpfile tmpfile.c >/dev/null 2>/dev/null
     if test "$?" = "0"; then
 	has_inttypes="yes"
     fi
