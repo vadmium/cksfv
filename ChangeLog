@@ -3,6 +3,9 @@
 	  the build procedure:
 	  - -W/-O flags are useless in header checks in the configure script
 	  - $compiler was not used for header checks in the configure script
+	  - Cleaned CFLAGS handling so that if CFLAGS is set by the 
+	    environment, the default -O2 is stripped away from the
+	    src/Makefile.in.
 
 2005-10-23  Heikki Orsila <heikki.orsila@iki.fi>
 	* Version 1.3.7
