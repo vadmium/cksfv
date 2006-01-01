@@ -1,3 +1,7 @@
+2006-01-01  Heikki Orsila <heikki.orsila@iki.fi>
+	* Version 1.3.8
+	- configure and Makefile cleanups and fixes.
+
 2005-10-24  Heikki Orsila <heikki.orsila@iki.fi>
 	- Mike Frysinger <vapier@gentoo.org> pointed out several things about
 	  the build procedure:
