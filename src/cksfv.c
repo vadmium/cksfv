@@ -33,6 +33,7 @@
 int use_basename = 0;
 int be_quiet = 0;
 int be_caseinsensitive = 0;
+int be_backslashinsensitive = 0;
 int recurse = 0;
 
 int main(int argc, char *argv[])
@@ -43,10 +44,13 @@ int main(int argc, char *argv[])
   int follow = 0;
   int i;
 
-  while ((ch = getopt(argc, argv, "iC:f:qvbrL")) != -1)
+  while ((ch = getopt(argc, argv, "iC:f:qvbrLs")) != -1)
     switch (ch) {
     case 'i':
       be_caseinsensitive = 1;
+      break;
+    case 's':
+      be_backslashinsensitive = 1;
       break;
     case 'C':
       strncpy(dir, optarg, sizeof(dir));

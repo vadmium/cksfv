@@ -162,6 +162,15 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
       continue;
     }
 
+    /* Replace backslashes with slashes */
+    if (be_backslashinsensitive == 1) {
+      j = 0;
+      for (j = 0; filename[j] != 0; j++) {
+        if (filename[j] == '\\')
+          filename[j] = '/';
+      }
+    }
+
     if (!QUIET)
       fprintf(stderr, "%-49s ", filename);
 

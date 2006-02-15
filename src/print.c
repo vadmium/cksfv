@@ -135,6 +135,7 @@ void pusage()
   printf(" -L\tfollow symlinks in recursive mode\n");
   printf(" -q\tquiet, only prints error messages\n");
   printf(" -r\trecursively check .sfv files in subdirectories\n");
+  printf(" -s\treplace backslashes with slashes on filenames\n");
   printf(" -v\tverbose, by default this option is on\n");
   exit(1);
 }

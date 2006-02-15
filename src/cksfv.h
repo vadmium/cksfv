@@ -6,6 +6,7 @@
 extern int use_basename;
 extern int be_quiet;
 extern int be_caseinsensitive;
+extern int be_backslashinsensitive;
 extern int recursive;
 extern char **sfv_broken_list;
 extern int sfv_broken;
