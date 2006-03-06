@@ -66,6 +66,11 @@ if test -z "$CFLAGS" ; then
     CFLAGS="-O2"
 fi
 
+os="`uname`"
+if test "$os" = "SunOS" ; then
+    CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
+fi
+
 sed -e "s|{CC}|$compiler|" \
     -e "s|{CFLAGS}|$CFLAGS|" \
     < src/Makefile.in > src/Makefile
