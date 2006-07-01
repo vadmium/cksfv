@@ -19,7 +19,7 @@
 CC=		{CC}
 PROG=		cksfv
 CFLAGS=		-Wall -D_LARGEFILE64_SOURCE -I. {CFLAGS}
-SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c
+SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c {EXTRASOURCES}
 
 $(PROG): $(SRCS) config.h
 	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LDFLAGS)

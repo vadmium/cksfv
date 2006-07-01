@@ -34,6 +34,10 @@
 #define O_LARGEFILE (0)
 #endif
 
+#ifndef WIN32
+#define O_BINARY (0)
+#endif
+
 int newsfv(char **argv)
 {
   int fd, rval = 0;
@@ -47,7 +51,7 @@ int newsfv(char **argv)
 
   while (*argv) {
     fn = *argv++;
-    if ((fd = open(fn, O_RDONLY | O_LARGEFILE, 0)) < 0) {
+    if ((fd = open(fn, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
       if (!TOTALLY_QUIET)
 	fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
       rval = 1;

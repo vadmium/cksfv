@@ -40,6 +40,10 @@
 #define O_LARGEFILE (0)
 #endif
 
+#ifndef WIN32
+#define O_BINARY (0)
+#endif
+
 static int find_file(char *filename, char *dir);
 
 
@@ -175,11 +179,11 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
       fprintf(stderr, "%-49s ", filename);
 
     /* can we open the file */
-    if ((file = open(filename, O_RDONLY | O_LARGEFILE, 0)) < 0) {
+    if ((file = open(filename, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
       if (be_caseinsensitive == 1) {
 	/* try to search for it if ingore case is set */
 	find_file(filename, dir);
-	file = open(filename, O_RDONLY | O_LARGEFILE, 0);
+	file = open(filename, O_RDONLY | O_LARGEFILE | O_BINARY, 0);
       }
     }
 
@@ -355,10 +359,12 @@ int recursivereadsfv(char *dir, int follow, int argc, char **argv)
     if (strcmp(dirinfo->d_name, "..") == 0)
       continue;
 
-    if (follow)
-      ret = stat(dirinfo->d_name, &dirstat);
-    else
+#ifndef WIN32
+    if (!follow)
       ret = lstat(dirinfo->d_name, &dirstat);
+    else
+#endif
+      ret = stat(dirinfo->d_name, &dirstat);
 
     if (ret == -1) {
       if (!QUIET) {

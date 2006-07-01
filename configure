@@ -65,14 +65,19 @@ sed -e "s|{BINDIR}|$packagebindir|g" \
 if test -z "$CFLAGS" ; then
     CFLAGS="-O2"
 fi
+EXTRASOURCES=""
 
 os="`uname`"
 if test "$os" = "SunOS" ; then
     CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
+elif test "$os" = "MinGW" ; then
+    EXTRASOURCES="$EXTRASOURCES basename.c"
+    cp win32/libgen.h win32/basename.c src/
 fi
 
 sed -e "s|{CC}|$compiler|" \
     -e "s|{CFLAGS}|$CFLAGS|" \
+    -e "s|{EXTRASOURCES}|$EXTRASOURCES|" \
     < src/Makefile.in > src/Makefile
 
 echo "" > "src/config.h"

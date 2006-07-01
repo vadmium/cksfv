@@ -1,0 +1,21 @@
+INTRODUCTION
+
+This version of cksfv can be built with MinGW to produce a native MS
+Windows console application.  It will require no additional DLL beyond
+the standard environment provided by MS Windows 95/98/ME/2000/XP/2003 or
+newer.
+
+PREREQUISITES
+
+MinGW gcc-core, mingw-runtime, mingw32-make, and w32api are required to
+build cksfv.  The commands, gcc and mingw32-make, should be in PATH.
+
+Unix utilities are required in PATH to run tests from the cksfv
+distribution.  UnxUtils is known to work.  GnuWin32 and MSYS are
+unverified, but they are likely to work, too.
+
+BUILDING AND INSTALLING
+
+Read INSTALL. Some compatibility source files are copied from win32/
+to src/ directory otherwise the build process is similar to UNIX
+systems.

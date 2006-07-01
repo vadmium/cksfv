@@ -62,7 +62,11 @@ int main(int argc, char *argv[])
       rsfvflag = 1;
       break;
     case 'L':
+#ifndef WIN32
       follow = 1;
+#else
+      fprintf(stderr, "cksfv: ignoring -L in Windows\n");
+#endif
       break;
     case 'q':
       be_quiet++;
