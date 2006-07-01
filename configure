@@ -68,6 +68,11 @@ fi
 EXTRASOURCES=""
 
 os="`uname`"
+echo $os |grep MINGW32 > /dev/null
+if test "$?" = "0" ; then
+    os="MinGW"
+fi
+
 if test "$os" = "SunOS" ; then
     CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
 elif test "$os" = "MinGW" ; then

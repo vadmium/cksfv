@@ -3,6 +3,8 @@
 	  Yar Tikhiy <yar@comp.chem.msu.su>. I did some modifications
 	  to the patch submitted by Yar and did not test the result,
 	  so expect this doesn't work yet.
+	- Fixed MinGW OS recognition in configure script (hopefully
+	  works this time)
 
 2006-03-07  Heikki Orsila <heikki.orsila@iki.fi>
 	* Version 1.3.9
