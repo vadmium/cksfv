@@ -35,6 +35,8 @@ int be_quiet = 0;
 int be_caseinsensitive = 0;
 int be_backslashinsensitive = 0;
 int recurse = 0;
+FILE *progress_file;
+
 
 int main(int argc, char *argv[])
 {
@@ -44,13 +46,18 @@ int main(int argc, char *argv[])
   int follow = 0;
   int i;
 
-  while ((ch = getopt(argc, argv, "iC:f:qvbrLs")) != -1)
+  progress_file = stderr;
+
+  while ((ch = getopt(argc, argv, "icC:f:qvbrLs")) != -1)
     switch (ch) {
     case 'i':
       be_caseinsensitive = 1;
       break;
     case 's':
       be_backslashinsensitive = 1;
+      break;
+    case 'c':
+      progress_file = stdout;
       break;
     case 'C':
       strncpy(dir, optarg, sizeof(dir));

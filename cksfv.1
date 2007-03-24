@@ -5,7 +5,7 @@
 cksfv \- tests and creates simple file verification (SFV) listings
 .SH SYNOPSIS
 .B cksfv
-.I "[-biqrL] [-C directory] [-f file.sfv] [file ...]"
+.I "[-bciqrL] [-C directory] [-f file.sfv] [file ...]"
 .br
 .SH "DESCRIPTION"
 Some files that you download will come with a .sfv file.
@@ -28,6 +28,11 @@ These options are available
 .B \-b
 strip dirnames from filenames that are checksumed. loads the files from
 original positions, but prints only basenames to catalogue in sfv file.
+.TP
+.B \-c
+Use stdout for printing progress and final resolution (files OK or
+some errors detected). This is useful for external programs analysing
+output of cksfv. This also forces fflushes on the output when needed.
 .TP
 .B \-C
 change to directory for processing

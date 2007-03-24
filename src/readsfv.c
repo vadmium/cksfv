@@ -175,8 +175,10 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
       }
     }
 
-    if (!QUIET)
-      fprintf(stderr, "%-49s ", filename);
+    if (!QUIET) {
+      fprintf(progress_file, "%-49s ", filename);
+      fflush(progress_file);
+    }
 
     /* can we open the file */
     if ((file = open(filename, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
@@ -217,6 +219,7 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
     }
 
     if (crc32(file, &val)) {
+      /* file error */
       if (!QUIET)
 	fprintf(stderr, "%s\n", strerror(errno));
       else if (!TOTALLY_QUIET)
@@ -224,14 +227,17 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
       rval = 1;
     } else {
       if (val != sfvcrc) {
-	if (!QUIET)
-	  fprintf(stderr, "different CRC\n");
-	else if (!TOTALLY_QUIET)
+	if (!QUIET) {
+	  fprintf(progress_file, "different CRC\n");
+	  fflush(progress_file);
+	} else if (!TOTALLY_QUIET)
 	  fprintf(stderr, "cksfv: %s: Has a different CRC\n", filename);
 	rval = 1;
       } else
-	if (!QUIET)
-	  fprintf(stderr, "OK\n");
+	if (!QUIET) {
+	  fprintf(progress_file, "OK\n");
+	  fflush(progress_file);
+	}
     }
   next:
     close(file);
@@ -253,11 +259,10 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
   }
 
   if (!QUIET) {
-    if (rval == 0) {
-      fprintf(stderr, "--------------------------------------------------------------------------------\nEverything OK\a\n");
-    } else {
-      fprintf(stderr, "--------------------------------------------------------------------------------\nErrors Occurred\a\n");
-    }
+    fprintf(stderr, "--------------------------------------------------------------------------------\n");
+    fprintf(progress_file, "%s\a\n",
+	    rval == 0 ? "Everything OK" : "Errors Occured");
+    fflush(progress_file);
   }
 
   if (rval)

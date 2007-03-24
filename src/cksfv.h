@@ -10,6 +10,7 @@ extern int be_backslashinsensitive;
 extern int recursive;
 extern char **sfv_broken_list;
 extern int sfv_broken;
+extern FILE *progress_file;
 
 int readsfv(char *filename, char *dir, int argc, char **argv);
 int recursivereadsfv(char *dir, int follow, int argc, char **argv);

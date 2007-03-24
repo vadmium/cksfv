@@ -1,3 +1,7 @@
+2007-03-25  Heikki Orsila <heikki.orsila@iki.fi>
+	- Added -c option to force progress and final resolution prints 
+	  to stdout. See the man page.
+
 2006-07-01  Heikki Orsila <heikki.orsila@iki.fi>
 	- Merged experimental support for MinGW build process from
 	  Yar Tikhiy <yar@comp.chem.msu.su>. I did some modifications

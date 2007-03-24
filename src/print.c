@@ -126,9 +126,11 @@ void pusage()
 {
   printf("cksfv v%s:\tBryan Call <bc@fodder.org>, and later modified by\n\t\tHeikki Orsila <heikki.orsila@iki.fi>.\n", VERSION);
   printf("\tweb:\t%s\n\n", WEBSITE);
-  printf("usage: cksfv [-biq] [-C directory] [-f file.sfv] ");
+  printf("usage: cksfv [-bciq] [-C directory] [-f file.sfv] ");
   printf("[file ...]\nsupported options:\n\n");
   printf(" -b\tprint only the basename when creating an sfv (no directory component)\n");
+  printf(" -c\tuse stdout for printing progress and final resolution (useful for\n");
+  printf("\texternal tools analysing cksfv output)\n");
   printf(" -C\tchange to directory for processing\n");
   printf(" -f\t.sfv file to verify\n");
   printf(" -i\tignore case on filenames\n");
