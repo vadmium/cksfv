@@ -1,4 +1,10 @@
 2007-03-25  Heikki Orsila <heikki.orsila@iki.fi>
+	* Version 1.3.10
+	- Added an option (-c) for remote programs to monitor sfv checking
+	  more easily
+	- MinGW fixes
+
+2007-03-25  Heikki Orsila <heikki.orsila@iki.fi>
 	- Added -c option to force progress and final resolution prints 
 	  to stdout. See the man page.
 
