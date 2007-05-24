@@ -1,6 +1,6 @@
 2007-05-24  Heikki Orsila <heikki.orsila@iki.fi>
-	- Added -D_FILE_OFFSET_BITS=64 for 32 bit platforms to support files
-	  large files properly. [PERF] [ADAP]
+	- Added -D_FILE_OFFSET_BITS=64 for some 32 bit platforms to support
+	  files large files properly (Catalin Boie) [PERF] [ADAP]
 	- Change log and version control log will from now use 1-4 tags,
 	  which are: [PREV] (preventive), [PERF] (perfective), [ADAP]
 	  (adaptive) and [CORR] (corrective). [PREV] means preventive
