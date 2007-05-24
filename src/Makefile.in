@@ -18,7 +18,7 @@
 
 CC=		{CC}
 PROG=		cksfv
-CFLAGS=		-Wall -D_LARGEFILE64_SOURCE -I. {CFLAGS}
+CFLAGS=		-Wall -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -I. {CFLAGS}
 SRCS=		cksfv.c print.c crc32.c readsfv.c newsfv.c {EXTRASOURCES}
 
 $(PROG): $(SRCS) config.h

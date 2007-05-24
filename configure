@@ -73,9 +73,7 @@ if test "$?" = "0" ; then
     os="MinGW"
 fi
 
-if test "$os" = "SunOS" ; then
-    CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
-elif test "$os" = "MinGW" ; then
+if test "$os" = "MinGW" ; then
     EXTRASOURCES="$EXTRASOURCES basename.c"
     cp win32/libgen.h win32/basename.c src/
 fi
