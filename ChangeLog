@@ -1,3 +1,14 @@
+2007-05-24  Heikki Orsila <heikki.orsila@iki.fi>
+	- Added -D_FILE_OFFSET_BITS=64 for 32 bit platforms to support files
+	  large files properly. [PERF] [ADAP]
+	- Change log and version control log will from now use 1-4 tags,
+	  which are: [PREV] (preventive), [PERF] (perfective), [ADAP]
+	  (adaptive) and [CORR] (corrective). [PREV] means preventive
+	  maintenance actions, such as assertions and self-tests. [PERF]
+	  means actions improving program quality or adding features.
+	  [ADAP] means changes to adapt to certain run-time environment.
+	  [CORR] means bug fixes.
+
 2007-03-25  Heikki Orsila <heikki.orsila@iki.fi>
 	* Version 1.3.10
 	- Added an option (-c) for remote programs to monitor sfv checking
