@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="1.3.10"
+version="1.3.11"
 prefix="/usr/local"
 packageprefix=""
 compiler="gcc"
@@ -139,5 +139,23 @@ echo "  man directory:             $mandir"
 echo "  compiler:                  $compiler"
 echo "  has stdint.h:              $has_stdint"
 echo "  has inttypes.h:            $has_inttypes"
+
+have_nautilus="no"
+if test -n "$(zenity --version 2>/dev/null)" ; then
+    if test -n "$(nautilus --version 2>/dev/null)" ; then
+	have_natilus="yes"
+    fi
+fi
+
+if test "$have_nautilus" = "yes" ; then
+    echo ""
+    echo "It seems you have Nautilus, you can copy scripts/CheckSFV"
+    echo "Nautilus script into:"
+    echo ""
+    echo "    ~/.gnome2/nautilus-scripts"
+else
+    echo "  nautilus support:          no"
+fi
+
 echo ""
 echo "configure succesful."

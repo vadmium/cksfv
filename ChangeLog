@@ -1,13 +1,22 @@
+2007-07-11  Heikki Orsila <heikki.orsila@iki.fi>
+	- Added a bash script (scripts/CheckSFV) for checking SFV files with
+	  Nautilus 2. You can install the script manually by:
+
+	     cp scripts/CheckSFV ~/.gnome2/nautilus-scripts/
+
+	  Contributed by Mike Appelman <chokuchou@gmail.com>.
+
 2007-05-24  Heikki Orsila <heikki.orsila@iki.fi>
-	- Added -D_FILE_OFFSET_BITS=64 for some 32 bit platforms to support
-	  files large files properly (Catalin Boie) [PERF] [ADAP]
+	- Added -D_FILE_OFFSET_BITS=64 for some 32 bit platforms to
+	  support files large files properly (Catalin Boie) [PERFECTIVE]
+	  [ADAPTIVE]
 	- Change log and version control log will from now use 1-4 tags,
-	  which are: [PREV] (preventive), [PERF] (perfective), [ADAP]
-	  (adaptive) and [CORR] (corrective). [PREV] means preventive
-	  maintenance actions, such as assertions and self-tests. [PERF]
-	  means actions improving program quality or adding features.
-	  [ADAP] means changes to adapt to certain run-time environment.
-	  [CORR] means bug fixes.
+	  which are: [PREVENTIVE], [PERFECTIVE], [ADAPTIVE] and
+	  [CORRECTIVE]. [PREVENTIVE] means preventive maintenance actions,
+	  such as assertions and self-tests. [PERFECTIVE] means actions
+	  improving program quality or adding features.
+	  [ADAPTIVE] means changes to adapt to certain run-time
+	  environment. [CORRECTIVE] means bug fixes.
 
 2007-03-25  Heikki Orsila <heikki.orsila@iki.fi>
 	* Version 1.3.10

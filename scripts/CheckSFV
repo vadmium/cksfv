@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# +---------------------------------------+
+# |          == CheckSFV ==               |
+# |  This is a GNOME Nautilus script.     |
+# |    Save it in the scripts dir:        |
+# |    ~/.gnome2/nautilus-scripts         |
+# |                                       |
+# |          DEPENDENCIES                 |
+# |            - zenity                   |
+# |            - cksfv                    |
+# |                                       |
+# |  When you have made it executable,    |
+# |       right click an SFV file,        |
+# |    select CheckSFV from the Script    |
+# |        menu and let it check          |
+# |      the CRCs inside the file!        |
+# |                                       |
+# |     Copyright (C) 2007 Mike Appelman  |
+# |        [chokuchou@gmail.com]          |
+# |                                       |
+# |     License: GNU GPL v2 and later     |
+# +---------------------------------------+
+
+function temp_file_error() {
+	zenity --error --text="Could not get a temporary file" --title="No temporary file"
+	exit 1
+}
+
+if [ $# -ne 1 ] ; then
+	zenity --error --text="Can check only one file at a time!" --title="Too many files"
+	exit 1
+elif [ ${1##*.} != 'sfv' ] ; then
+	zenity --error --text="File \'$1\' doesn't have .sfv extension and will not be checked." --title="Wrong extension"
+	exit 1
+fi
+
+declare -i x=0
+while [ $x -lt $(cat "$1" | wc -l) ] ; do
+	declare -i let x=x+1
+	head -n $x "$1" | tail -n 1 > /dev/null
+done
+
+(
+	declare -i p=0
+	while [ $p -lt $x ] ; do
+       		p=$((p+1))
+
+		tmpfile1=$(tempfile)
+		if test "$?" != "0" ; then
+			temp_file_error
+		fi
+		tmpfile2=$(tempfile)
+		if test "$?" != "0" ; then
+			temp_file_error
+		fi
+
+	       	head -n $p "$1" | tail -n 1 > "$tmpfile1"
+		cksfv -f "$tmpfile1" 2> "$tmpfile2"
+		check=$?
+		file=$(tail -n 3 "$tmpfile2" | head -n 1 | awk '{ print $1 }')
+
+		if [ $check -ne 0 ] ; then
+			zenity --error --text="CRC Check failed: \'$file\'" --title="Check failed"
+			exit 1
+		else
+			percent=$(((100 * p) / x))
+			echo "$percent%"
+			echo '#'"Checking \'$file\' ... $percent%"
+		fi
+	done
+)| zenity --progress --text="Loading \'$1\'..." --title="Checking..." --auto-close
+exit 0
