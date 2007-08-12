@@ -34,55 +34,56 @@
 
 int newsfv(char **argv)
 {
-  int fd, rval = 0;
-  char *fn;
-  uint32_t val;
-  char *tmpname;
-  struct stat st;
+    int fd, rval = 0;
+    char *fn;
+    uint32_t val;
+    char *tmpname;
+    struct stat st;
 
-  pnsfv_head();
-  pfileinfo(argv);
+    pnsfv_head();
+    pfileinfo(argv);
 
-  while (*argv) {
-    fn = *argv++;
-    if ((fd = open(fn, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
-      if (!TOTALLY_QUIET)
-	fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
-      rval = 1;
-      continue;
-    }
-    if (fstat(fd, &st)) {
-      if (!TOTALLY_QUIET)
-	fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn, strerror(errno)); 
-      rval = 1;
-      goto next;
-    }
-    if (S_ISDIR(st.st_mode)) {
-      if (!TOTALLY_QUIET)
-	fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
-      rval = 1;
-      goto next;
-    }
-    if (crc32(fd, &val)) {
-      if (!TOTALLY_QUIET)
-	fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno)); 
-      rval = 1;
-    } else {
-      if (use_basename) {
-	if ((tmpname = strdup(fn)) == NULL) {
-	  if (!TOTALLY_QUIET)
-	    fprintf(stderr, "out of memory\n");
-	  exit(-1);
+    while (*argv) {
+	fn = *argv++;
+	if ((fd = open(fn, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
+	    if (!TOTALLY_QUIET)
+		fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
+	    rval = 1;
+	    continue;
 	}
-	pcrc(basename(tmpname), val);
-	free(tmpname);
-      } else {
-	pcrc(fn, val);
-      }
+	if (fstat(fd, &st)) {
+	    if (!TOTALLY_QUIET)
+		fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn,
+			strerror(errno));
+	    rval = 1;
+	    goto next;
+	}
+	if (S_ISDIR(st.st_mode)) {
+	    if (!TOTALLY_QUIET)
+		fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
+	    rval = 1;
+	    goto next;
+	}
+	if (crc32(fd, &val)) {
+	    if (!TOTALLY_QUIET)
+		fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
+	    rval = 1;
+	} else {
+	    if (use_basename) {
+		if ((tmpname = strdup(fn)) == NULL) {
+		    if (!TOTALLY_QUIET)
+			fprintf(stderr, "out of memory\n");
+		    exit(-1);
+		}
+		pcrc(basename(tmpname), val);
+		free(tmpname);
+	    } else {
+		pcrc(fn, val);
+	    }
+	}
+      next:
+	close(fd);
     }
-  next:
-    close(fd);
-  }
 
-  return rval;
+    return rval;
 }

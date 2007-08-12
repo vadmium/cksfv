@@ -34,78 +34,79 @@ FILE *progress_file;
 
 int main(int argc, char *argv[])
 {
-  int   ch, rval;
-  int   rsfvflag = 0;
-  char  dir[PATH_MAX] = ".", sfvfile[PATH_MAX];
-  int follow = 0;
-  int i;
+    int ch, rval;
+    int rsfvflag = 0;
+    char dir[PATH_MAX] = ".", sfvfile[PATH_MAX];
+    int follow = 0;
+    int i;
 
-  progress_file = stderr;
+    progress_file = stderr;
 
-  while ((ch = getopt(argc, argv, "icC:f:qvbrLs")) != -1)
-    switch (ch) {
-    case 'i':
-      be_caseinsensitive = 1;
-      break;
-    case 's':
-      be_backslashinsensitive = 1;
-      break;
-    case 'c':
-      progress_file = stdout;
-      break;
-    case 'C':
-      strncpy(dir, optarg, sizeof(dir));
-      dir[sizeof(dir) - 1] = 0;
-      break;  
-    case 'f':
-      strncpy(sfvfile, optarg, sizeof(sfvfile));
-      sfvfile[sizeof(sfvfile) - 1] = 0;
-      rsfvflag = 1;
-      break;
-    case 'L':
+    while ((ch = getopt(argc, argv, "icC:f:qvbrLs")) != -1)
+	switch (ch) {
+	case 'i':
+	    be_caseinsensitive = 1;
+	    break;
+	case 's':
+	    be_backslashinsensitive = 1;
+	    break;
+	case 'c':
+	    progress_file = stdout;
+	    break;
+	case 'C':
+	    strncpy(dir, optarg, sizeof(dir));
+	    dir[sizeof(dir) - 1] = 0;
+	    break;
+	case 'f':
+	    strncpy(sfvfile, optarg, sizeof(sfvfile));
+	    sfvfile[sizeof(sfvfile) - 1] = 0;
+	    rsfvflag = 1;
+	    break;
+	case 'L':
 #ifndef WIN32
-      follow = 1;
+	    follow = 1;
 #else
-      fprintf(stderr, "cksfv: ignoring -L in Windows\n");
+	    fprintf(stderr, "cksfv: ignoring -L in Windows\n");
 #endif
-      break;
-    case 'q':
-      be_quiet++;
-      break;
-    case 'v':
-      be_quiet = 0;
-      break;
-    case 'b':
-      use_basename = 1;
-      break;
-    case 'r':
-      recurse = 1;
-      rsfvflag = 1;
-      break;
-    case '?':
-    default:
-      pusage();
+	    break;
+	case 'q':
+	    be_quiet++;
+	    break;
+	case 'v':
+	    be_quiet = 0;
+	    break;
+	case 'b':
+	    use_basename = 1;
+	    break;
+	case 'r':
+	    recurse = 1;
+	    rsfvflag = 1;
+	    break;
+	case '?':
+	default:
+	    pusage();
+	}
+    argc -= optind;
+    argv += optind;
+
+    if (rsfvflag == 1) {
+	if (recurse == 1)
+	    rval = recursivereadsfv(dir, follow, argc, argv);
+	else
+	    rval = readsfv(sfvfile, dir, argc, argv);
+    } else {
+	if (argc < 1) {
+	    pusage();
+	}
+
+	rval = newsfv(argv);
     }
-  argc -= optind;
-  argv += optind;
 
-  if (rsfvflag == 1) {
-    if (recurse == 1)
-      rval = recursivereadsfv(dir, follow, argc, argv);
-    else
-      rval = readsfv(sfvfile, dir, argc, argv);
-  } else {
-    if (argc < 1) {
-      pusage();
+    if (!TOTALLY_QUIET && recurse && sfv_broken) {
+	fprintf(stderr,
+		"\nList of sfv files with broken files (or broken sfv files):\n");
+	for (i = 0; i < sfv_broken; i++)
+	    fprintf(stderr, "%s\n", sfv_broken_list[i]);
     }
-
-    rval = newsfv(argv);
-  }
-
-  if (!TOTALLY_QUIET && recurse && sfv_broken) {
-    fprintf(stderr, "\nList of sfv files with broken files (or broken sfv files):\n");
-    for (i = 0; i < sfv_broken; i++)
-      fprintf(stderr, "%s\n", sfv_broken_list[i]);
-  }
-  exit(rval);
+    exit(rval);
 }
