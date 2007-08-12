@@ -142,6 +142,14 @@ if test "$?" != 0 ; then
 fi
 echo test case 15 successful
 
+# test case 16
+$cksfv -g dir3/c1.sfv >/dev/null 2>/dev/null
+if test "$?" != "0" ; then
+    echo "test case 16 unsuccessful. should report correct checksum."
+    ret="1"
+fi
+echo test case 16 successful
+
 if test "$ret" != "0" ; then
     echo "One or more of the tests were unsuccessful. Please report."
     exit -1

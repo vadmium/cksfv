@@ -36,13 +36,15 @@ int main(int argc, char *argv[])
 {
     int ch, rval;
     int rsfvflag = 0;
-    char dir[PATH_MAX] = ".", sfvfile[PATH_MAX];
+    char dir[PATH_MAX] = ".";
+    char sfvfile[PATH_MAX];
     int follow = 0;
     int i;
+    int dir_set = 0;
 
     progress_file = stderr;
 
-    while ((ch = getopt(argc, argv, "icC:f:qvbrLs")) != -1)
+    while ((ch = getopt(argc, argv, "icC:f:g:qvbrLs")) != -1)
 	switch (ch) {
 	case 'i':
 	    be_caseinsensitive = 1;
@@ -56,11 +58,17 @@ int main(int argc, char *argv[])
 	case 'C':
 	    strncpy(dir, optarg, sizeof(dir));
 	    dir[sizeof(dir) - 1] = 0;
+	    dir_set = 1;
 	    break;
 	case 'f':
 	    strncpy(sfvfile, optarg, sizeof(sfvfile));
 	    sfvfile[sizeof(sfvfile) - 1] = 0;
 	    rsfvflag = 1;
+	    break;
+	case 'g':
+	    strncpy(sfvfile, optarg, sizeof(sfvfile));
+	    sfvfile[sizeof(sfvfile) - 1] = 0;
+	    rsfvflag = 2;
 	    break;
 	case 'L':
 #ifndef WIN32
@@ -80,7 +88,6 @@ int main(int argc, char *argv[])
 	    break;
 	case 'r':
 	    recurse = 1;
-	    rsfvflag = 1;
 	    break;
 	case '?':
 	default:
@@ -89,15 +96,45 @@ int main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
-    if (rsfvflag == 1) {
-	if (recurse == 1)
-	    rval = recursivereadsfv(dir, follow, argc, argv);
-	else
+    if (recurse && rsfvflag) {
+	fprintf(stderr, "cksfv: you may not specify both -r and -f/-g\n");
+	exit(1);
+    }
+
+    if (dir_set && rsfvflag == 2) {
+	fprintf(stderr, "cksfv: you may not specify both -C and -g\n");
+	exit(1);
+    }
+
+    if (recurse) {
+	rval = recursivereadsfv(dir, follow, argc, argv);
+
+    } else if (rsfvflag) {
+
+	if (rsfvflag == 1) {
 	    rval = readsfv(sfvfile, dir, argc, argv);
-    } else {
-	if (argc < 1) {
-	    pusage();
+
+	} else if (rsfvflag == 2) {
+
+	    char *newdir;
+
+	    /* Get directory name of sfv file */
+	    strcpy(dir, sfvfile);
+	    newdir = strrchr(dir, '/');
+	    if (newdir)
+		*newdir = 0;
+	    else
+		strcpy(dir, ".");
+
+	    rval = readsfv(sfvfile, dir, argc, argv);
+	} else {
+	    fprintf(stderr, "rsfvflag > 2. Please report this bug!\n");
+	    exit(1);
 	}
+
+    } else {
+	if (argc < 1)
+	    pusage();
 
 	rval = newsfv(argv);
     }

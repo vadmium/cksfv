@@ -1,3 +1,12 @@
+2007-08-12  Heikki Orsila <heikki.orsila@iki.fi>
+	* Version 1.3.12
+	- Code cleanups
+	- Documentation improvements
+	- Added -g option that replaces -f in most cases. Instead of running
+	      cksfv -C foo -f foo/bar.sfv
+	  one can just run:
+	      cksfv -g foo/bar.sfv
+
 2007-07-11  Heikki Orsila <heikki.orsila@iki.fi>
 	* Version 1.3.11
 	- Nautilus 2 CheckSFV script

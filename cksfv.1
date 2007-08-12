@@ -5,15 +5,15 @@
 cksfv \- tests and creates simple file verification (SFV) listings
 .SH SYNOPSIS
 .B cksfv
-.I "[-bciqrL] [-C directory] [-f file.sfv] [file ...]"
+.I "[-bciqrL] [-C dir] [-f file] [-g path] [file ...]"
 .br
 .SH "DESCRIPTION"
 Some files that you download will come with a .sfv file.
 .BR cksfv
 is used to
 verify that the files that you received are the same as the originals.
-cksfv is a program that can use the .sfv file to verify the downloaded
-files.  Also, it can be used to create new .sfv files.
+cksfv uses the .sfv file to verify the downloaded
+files.  It can also be used to create new .sfv files.
 .PP
 .BR md5sum
 (1) or
@@ -34,10 +34,15 @@ Use stdout for printing progress and final resolution (files OK or
 some errors detected). This is useful for external programs analysing
 output of cksfv. This also forces fflushes on the output when needed.
 .TP
-.B \-C
+.B \-C dir
+.BR
 change to directory for processing
-.B \-f
+.TP
+.B \-f file
  .sfv file to verify
+.TP
+.B \-g path
+ Go to the path name directory and verify the sfv file
 .TP
 .B \-i
 ignore case on filenames
@@ -58,9 +63,9 @@ meaning when used in conjunction with the -r option.
 
 .SH EXAMPLES
 .nf
-Check checksums of files listed in 'files.sfv':
+Check checksums of files listed in 'foo/files.sfv':
 .ft B
-cksfv -f files.sfv
+cksfv -g foo/files.sfv
 
 .ft R
 Create checksums for a bunch of files:
@@ -72,12 +77,12 @@ Check checksum of case-insensitive filenames listed in 'files.sfv'.
 This is sometimes useful with files created by operating systems
 that have case-insensitive filesystem names.
 .ft B
-cksfv -i -f files.sfv
+cksfv -i -g files.sfv
 
 .ft R
 Check checksums of files 'foo' and 'bar' listed in 'files.sfv':
 .ft B
-cksfv -f files.sfv foo bar
+cksfv -g files.sfv foo bar
 
 .ft R
 Create checksums of files matching /foo/bar/* and strip dirnames away:
@@ -85,8 +90,7 @@ Create checksums of files matching /foo/bar/* and strip dirnames away:
 cksfv -b /foo/bar/* > files.sfv
 
 .ft R
-Recursively scan through a directory and subdirectories and process
-each .sfv file that is found:
+Recursively scan /foo/bar and verify each .sfv file:
 .ft B
 cksfv -C /foo/bar -r
 
