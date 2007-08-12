@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 {
   int   ch, rval;
   int   rsfvflag = 0;
-  char  dir[PATH_MAX + 1] = ".", sfvfile[PATH_MAX + 1];
+  char  dir[PATH_MAX] = ".", sfvfile[PATH_MAX];
   int follow = 0;
   int i;
 

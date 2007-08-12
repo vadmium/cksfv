@@ -347,8 +347,10 @@ int recursivereadsfv(char *dir, int follow, int argc, char **argv)
   }
   
   while ((dirinfo = readdir(dirp)) != NULL) {
+
     if (strcmp(dirinfo->d_name, ".") == 0)
       continue;
+
     if (strcmp(dirinfo->d_name, "..") == 0)
       continue;
 
@@ -370,27 +372,33 @@ int recursivereadsfv(char *dir, int follow, int argc, char **argv)
     }
     
     if (S_ISDIR(dirstat.st_mode)) {
+      /* Recursive descent into a directory */
       if (recursivereadsfv(dirinfo->d_name, follow, argc, argv))
 	finalret = 1;
-    }
-    else if (S_ISREG(dirstat.st_mode) && (strcasecmp(dirinfo->d_name + strlen(dirinfo->d_name) - 4, ".sfv") == 0)) {
-       char processdir[PATH_MAX+1];
 
-       if (!getcwd(processdir, sizeof(processdir))) {
-         if (!QUIET) {
-	   fprintf(stderr, "getcwd:\n");
-	 } else if (!TOTALLY_QUIET) {
-	   fprintf(stderr, "getcwd: %s\n", strerror(errno));
-	 }
-	 closedir(dirp);
-	 return 1;
-       }
+    } else if (S_ISREG(dirstat.st_mode) &&
+	       (strcasecmp(dirinfo->d_name + strlen(dirinfo->d_name) - 4, ".sfv") == 0)) {
+      /* Read an sfv file */
+      char processdir[PATH_MAX];
 
-       if (!QUIET)
-	 fprintf(stderr, "Entering directory: %s\n", processdir);
+      if (!getcwd(processdir, sizeof(processdir))) {
 
-       if (readsfv(dirinfo->d_name, processdir, argc, argv))
-	 finalret = 1;
+	if (!QUIET) {
+	  fprintf(stderr, "getcwd:\n");
+	} else if (!TOTALLY_QUIET) {
+	  fprintf(stderr, "getcwd: %s\n", strerror(errno));
+	}
+
+	closedir(dirp);
+
+	return 1;
+      }
+
+      if (!QUIET)
+	fprintf(stderr, "Entering directory: %s\n", processdir);
+
+      if (readsfv(dirinfo->d_name, processdir, argc, argv))
+	finalret = 1;
     }
   }
   
