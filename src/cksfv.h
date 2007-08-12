@@ -1,7 +1,21 @@
 #ifndef _CKSFV_H_
 #define _CKSFV_H_
 
+#include <limits.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "config.h"
+
+#ifndef PATH_MAX
+#define PATH_MAX (2048)
+#endif
+
+#ifndef O_LARGEFILE
+#define O_LARGEFILE (0)
+#endif
+
 
 extern int use_basename;
 extern int be_quiet;

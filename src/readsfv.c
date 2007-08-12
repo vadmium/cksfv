@@ -19,26 +19,14 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <dirent.h>
 #include <stdlib.h>
-#include <limits.h>
 
 #include "cksfv.h"
 #include "config.h"
-
-#ifndef PATH_MAX
-#define PATH_MAX (512)
-#endif
-
-#ifndef O_LARGEFILE
-#define O_LARGEFILE (0)
-#endif
 
 #ifndef WIN32
 #define O_BINARY (0)

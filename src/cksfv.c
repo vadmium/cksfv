@@ -21,13 +21,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-
 #include "cksfv.h"
-
-#ifndef PATH_MAX
-#define PATH_MAX (512)
-#endif
 
 /* config variables for other modules */
 int use_basename = 0;

@@ -22,17 +22,11 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <libgen.h>
 
 #include "cksfv.h"
 #include "config.h"
 
-#ifndef O_LARGEFILE
-#define O_LARGEFILE (0)
-#endif
 
 #ifndef WIN32
 #define O_BINARY (0)
