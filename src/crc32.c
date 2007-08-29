@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-extern int errno;
-
 #define BUFFERSIZE 16384	/* (16k) buffer size for reading from the file */
 
 static const uint32_t crctable[256] = {
