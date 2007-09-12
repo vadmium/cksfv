@@ -3,9 +3,13 @@
 version="1.3.12"
 prefix="/usr/local"
 packageprefix=""
-compiler="gcc"
 have_mandir="no"
 have_bindir="no"
+
+compiler="gcc"
+if test -n "$CC" ; then
+    compiler="$CC"
+fi
 
 for opt in "$@" ; do
 	case $opt in

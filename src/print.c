@@ -30,7 +30,7 @@
 
 #define WEBSITE "http://www.iki.fi/shd/foss/cksfv/"
 
-void pnsfv_head()
+void pnsfv_head(void)
 {
     time_t clock;
     struct tm *timeinfo;
@@ -123,30 +123,30 @@ void prsfv_head(char *fn)
     fprintf(stderr, "%s", head);
 }
 
-void pusage()
+void pusage(void)
 {
     printf("cksfv v%s: %s\n", VERSION, WEBSITE);
-    printf("\n");
-    printf("usage: cksfv [-bciq] [-C dir] [-f file] [-g path] [file ...]\n");
-    printf("\n");
-    printf(" -b\t\tprint only the basename when creating an sfv (no directory\n");
-    printf("\t\tcomponent)\n");
-    printf(" -c\t\tuse stdout for printing progress and final resolution (useful\n");
-    printf("\t\tfor external tools analysing cksfv output)\n");
-    printf(" -C dir\t\tchange to directory for processing\n");
-    printf(" -f file\tVerify the sfv file\n");
-    printf(" -g path\tGo to the path name directory and verify the sfv file.\n");
-    printf("\t\tYou probably want this option instead of -f.\n");
-    printf(" -i\t\tignore case on filenames\n");
-    printf(" -L\t\tfollow symlinks in recursive mode\n");
-    printf(" -q\t\tquiet, only prints error messages\n");
-    printf(" -r\t\trecursively check .sfv files in subdirectories\n");
-    printf(" -s\t\treplace backslashes with slashes on filenames\n");
-    printf(" -v\t\tverbose, by default this option is on\n");
-    printf("\n");
-    printf("Example 1: Verify an sfv file in directory foo/\n");
-    printf("\n");
-    printf("\tcksfv -g foo/bar.sfv\n");
-    printf("\n");
+    printf("\n"
+	   "usage: cksfv [-bciq] [-C dir] [-f file] [-g path] [file ...]\n"
+	   "\n"
+	   " -b\t\tprint only the basename when creating an sfv (no directory\n"
+	   "\t\tcomponent)\n"
+	   " -c\t\tuse stdout for printing progress and final resolution (useful\n"
+	   "\t\tfor external tools analysing cksfv output)\n"
+	   " -C dir\t\tchange to directory for processing\n"
+	   " -f file\tVerify the sfv file\n"
+	   " -g path\tGo to the path name directory and verify the sfv file.\n"
+	   "\t\tYou probably want this option instead of -f.\n"
+	   " -i\t\tignore case on filenames\n"
+	   " -L\t\tfollow symlinks in recursive mode\n"
+	   " -q\t\tquiet, only prints error messages\n"
+	   " -r\t\trecursively check .sfv files in subdirectories\n"
+	   " -s\t\treplace backslashes with slashes on filenames\n"
+	   " -v\t\tverbose, by default this option is on\n"
+	   "\n"
+	   "Example 1: Verify an sfv file in directory foo/\n"
+	   "\n"
+	   "\tcksfv -g foo/bar.sfv\n"
+	   "\n");
     exit(1);
 }

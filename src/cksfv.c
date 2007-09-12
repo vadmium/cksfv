@@ -28,7 +28,6 @@ int use_basename = 0;
 int be_quiet = 0;
 int be_caseinsensitive = 0;
 int be_backslashinsensitive = 0;
-int recurse = 0;
 FILE *progress_file;
 
 
@@ -41,6 +40,7 @@ int main(int argc, char *argv[])
     int follow = 0;
     int i;
     int dir_set = 0;
+    int recurse = 0;
 
     progress_file = stderr;
 
