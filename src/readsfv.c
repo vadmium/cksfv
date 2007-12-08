@@ -89,7 +89,14 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 	goto error;
     }
 
-    while (fgets(buf, sizeof(buf), fd)) {
+    while (1) {
+	if (fgets(buf, sizeof(buf), fd) == NULL) {
+	    if (feof(fd))
+		break;
+
+	    continue;
+	}
+
 	/* comment in the sfv file ignore */
 	if (buf[0] == ';' || buf[0] == '\n' || buf[0] == '\r')
 	    continue;
