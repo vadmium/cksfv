@@ -91,7 +91,7 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 
     while (1) {
 	if (fgets(buf, sizeof(buf), fd) == NULL) {
-	    if (feof(fd))
+	    if (feof(fd) || ferror(fd))
 		break;
 
 	    continue;
