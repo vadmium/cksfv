@@ -401,9 +401,8 @@ int recursivereadsfv(char *dir, int follow, int argc, char **argv)
 		finalret = 1;
 
 	} else if (S_ISREG(dirstat.st_mode) &&
-		   (strcasecmp
-		    (dirinfo->d_name + strlen(dirinfo->d_name) - 4,
-		     ".sfv") == 0)) {
+		   strlen(dirinfo->d_name) > 4 &&
+		   (strcasecmp(dirinfo->d_name + strlen(dirinfo->d_name) - 4, ".sfv") == 0)) {
 	    /* Read an sfv file */
 	    char processdir[PATH_MAX];
 
