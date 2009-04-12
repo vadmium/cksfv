@@ -64,11 +64,13 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
     FILE *fd;
     char buf[PATH_MAX + 256];	/* enough for name and checksum */
     char *filename;
-    char *end;
     int file, rval = 0;
     uint32_t sfvcrc;
     uint32_t val;
-    int ind;
+    size_t i;
+    size_t checksumstart;
+    size_t checksumend;
+    size_t linelen;
     int j;
     int check;
     struct stat st;
@@ -101,46 +103,36 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 	if (buf[0] == ';' || buf[0] == '\n' || buf[0] == '\r')
 	    continue;
 
-	/* build filename and crc from the sfv file */
-	if ((end = strrchr(buf, ' ')) == NULL) {
-	    if (!TOTALLY_QUIET)
-		fprintf(stderr, "cksfv: %s: incorrect sfv file format\n",
-			fn);
-	    goto error;
+	linelen = strlen(buf);
+
+	/* Skip whitespace in the end of the line */
+	i = linelen - 1;
+	while (isspace(buf[i]) && i > 0)
+	    i--;
+	if (!i)
+	    continue;  /* empty line */
+
+	/* First byte after the checksum (zeroed later) */
+	checksumend = i + 1;
+
+	/* Scan past the hex digits (or fail) */
+	while (i > 0) {
+	    if (!isxdigit(buf[i]))
+		break;
+	    i--;
 	}
-	ind = ((intptr_t) end) - ((intptr_t) buf);
-	if (ind >= PATH_MAX) {
+	checksumstart = i + 1;
+	if (i == 0 || (checksumend - checksumstart) != 8) {
 	    if (!TOTALLY_QUIET)
-		fprintf(stderr, "cksfv: too long a name\n");
-	    goto error;
-	}
-	if ((ind + 9) >= ((intptr_t) strlen(buf))) {
-	    if (!TOTALLY_QUIET)
-		fprintf(stderr,
-			"cksfv: too short a line (checksum missing)\n");
-	    goto error;
-	}
-	/* check that it's exactly 8 hexadigits */
-	for (j = 1; j < 9; j++) {
-	    if (!isxdigit(((int) buf[ind + j]))) {
-		if (!TOTALLY_QUIET)
-		    fprintf(stderr,
-			    "cksfv: illegal checksum (should only contain hexdigits): %s\n",
-			    &buf[ind + 1]);
-		goto error;
-	    }
-	}
-	/* must be followed by a whitespace char */
-	if (!isspace((int) buf[ind + 9])) {
-	    if (!TOTALLY_QUIET)
-		fprintf(stderr, "cksfv: too long a checksum: %s\n",
-			&buf[ind + 1]);
+		fprintf(stderr, "cksfv: checksum should contain 8 hexdigits: %s\n", buf);
 	    goto error;
 	}
 
-	buf[ind] = '\0';	/* zero between filename and checksum */
-	buf[ind + 9] = '\0';	/* zero after checksum */
-	sfvcrc = strtoul(&buf[ind + 1], NULL, 16);
+	/* i should point to the last character before the checksum */
+	buf[i] = '\0';           /* zero between filename and checksum */
+	buf[checksumend] = '\0'; /* zero after checksum */
+
+	sfvcrc = strtoul(&buf[checksumstart], NULL, 16);
 
 	filename = buf;
 
