@@ -73,7 +73,7 @@ int newsfv(char **argv)
 		if ((tmpname = strdup(fn)) == NULL) {
 		    if (!TOTALLY_QUIET)
 			fprintf(stderr, "out of memory\n");
-		    exit(-1);
+		    exit(1);
 		}
 		pcrc(basename(tmpname), val);
 		free(tmpname);
