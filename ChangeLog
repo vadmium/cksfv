@@ -1,3 +1,11 @@
+2009-04-12  Heikki Orsila <heikki.orsila@iki.fi>
+	* Version 1.3.14
+        - Install the man page with proper permissions
+        - Fix buffer underflow [CORRECTIVE]
+        - Cleanup and fix sfv reading [CORRECTIVE] [PREVENTIVE]
+        - Fix test script reporting [CORRECTIVE]
+        - Consistent return value (1) for exit() [PREVENTIVE]
+
 2008-08-24  Heikki Orsila <heikki.orsila@iki.fi>
 	* Version 1.3.13
 	- Bug fixes
