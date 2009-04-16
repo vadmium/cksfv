@@ -15,3 +15,5 @@
 - exit with error on first false checksum or fault
 
 - Fix case insensitive file scanning. Affects names with / in sfv files.
+
+- Recursive sfv generation
