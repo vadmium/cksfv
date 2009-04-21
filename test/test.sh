@@ -166,6 +166,22 @@ else
     echo "test case 18 successful"
 fi
 
+$cksfv -f nullbyte.sfv >/dev/null 2>/dev/null
+if test "$?" != "0" ; then
+    echo "test case 19 unsuccessful. should report correct checksum."
+    ret="1"
+else
+    echo "test case 19 successful"
+fi
+
+$cksfv -f nullbyte2.sfv >/dev/null 2>/dev/null
+if test "$?" != "0" ; then
+    echo "test case 20 unsuccessful. should report correct checksum."
+    ret="1"
+else
+    echo "test case 20 successful"
+fi
+
 if test "$ret" != "0" ; then
     echo "One or more of the tests were unsuccessful. Please report."
     exit 1

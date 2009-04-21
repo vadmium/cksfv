@@ -104,6 +104,8 @@ int readsfv(char *fn, char *dir, int argc, char **argv)
 	    continue;
 
 	linelen = strlen(buf);
+	if (!linelen)
+	    continue;
 
 	/* Skip whitespace in the end of the line */
 	i = linelen - 1;
