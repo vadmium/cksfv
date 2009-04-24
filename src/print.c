@@ -90,7 +90,7 @@ void pfileinfo(char **argv)
     }
 }
 
-void pcrc(char *fn, uint32_t val)
+void pcrc(const char *fn, uint32_t val)
 {
     printf("%s %.8X\n", fn, val);
 }
@@ -141,6 +141,7 @@ void pusage(void)
 	   " -L\t\tfollow symlinks in recursive mode\n"
 	   " -q\t\tquiet, only prints error messages\n"
 	   " -r\t\trecursively check .sfv files in subdirectories\n"
+	   " -R\t\tRecursive checksum files in subdirectories\n"
 	   " -s\t\treplace backslashes with slashes on filenames\n"
 	   " -v\t\tverbose, by default this option is on\n"
 	   "\n"

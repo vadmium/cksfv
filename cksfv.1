@@ -5,7 +5,7 @@
 cksfv \- tests and creates simple file verification (SFV) listings
 .SH SYNOPSIS
 .B cksfv
-.I "[-bciqrL] [-C dir] [-f file] [-g path] [file ...]"
+.I "[-bciqrLR] [-C dir] [-f file] [-g path] [file ...]"
 .br
 .SH "DESCRIPTION"
 .BR cksfv
@@ -59,8 +59,8 @@ Go to the path name directory and verify checksums in the sfv file
 Ignore case in filenames. This is used in the checksum verification mode.
 .TP
 .B \-L
-Follow symlinks when recursing subdirectories. This option is used with
-the -r option.
+Follow symlinks when recursing subdirectories. This option can be used with
+the -r and -R options.
 .TP
 .B \-q
 Enable QUIET mode (instead of verbose mode), only error messages are printed
@@ -71,6 +71,10 @@ Enable VERBOSE mode, this is the default mode
 .B \-r
 recurse directories and check the .sfv files in each. Symlinks are not
 followed by default. This option cannot be used with -f and -g options.
+.TP
+.B \-R
+recurse directories and read checksum for each file. Symlinks are not
+followed by default.
 
 .SH EXAMPLES
 .nf

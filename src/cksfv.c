@@ -41,10 +41,11 @@ int main(int argc, char *argv[])
     int i;
     int dir_set = 0;
     int recurse = 0;
+    int recursivewrite = 0;
 
     progress_file = stderr;
 
-    while ((ch = getopt(argc, argv, "icC:f:g:qvbrLs")) != -1)
+    while ((ch = getopt(argc, argv, "icC:f:g:qvbrLRs")) != -1)
 	switch (ch) {
 	case 'i':
 	    be_caseinsensitive = 1;
@@ -80,6 +81,9 @@ int main(int argc, char *argv[])
 	case 'q':
 	    be_quiet++;
 	    break;
+	case 'R':
+	    recursivewrite = 1;
+	    break;
 	case 'v':
 	    be_quiet = 0;
 	    break;
@@ -106,7 +110,7 @@ int main(int argc, char *argv[])
 	exit(1);
     }
 
-    if (recurse) {
+    if (recurse && !recursivewrite) {
 	rval = recursivereadsfv(dir, follow, argc, argv);
 
     } else if (rsfvflag) {
@@ -136,7 +140,7 @@ int main(int argc, char *argv[])
 	if (argc < 1)
 	    pusage();
 
-	rval = newsfv(argv);
+	rval = newsfv(argv, recursivewrite, follow, NULL);
     }
 
     if (!TOTALLY_QUIET && recurse && sfv_broken) {

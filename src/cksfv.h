@@ -27,12 +27,12 @@ extern FILE *progress_file;
 
 int readsfv(char *filename, char *dir, int argc, char **argv);
 int recursivereadsfv(char *dir, int follow, int argc, char **argv);
-int newsfv(char **);
+int newsfv(char **argv, int recursive, int follow, const char *base);
 void pusage(void);
 
 void pnsfv_head();
 void pfileinfo(char **);
-void pcrc(char *fn, uint32_t val);
+void pcrc(const char *fn, uint32_t val);
 int crc32(int fd, uint32_t * val);
 void prsfv_head(char *fn);
 
