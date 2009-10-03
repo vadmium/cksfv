@@ -28,10 +28,15 @@
 #include "config.h"
 
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#define BINARY_MODE(fd) setmode(fd, O_BINARY)
+#else
 #define O_BINARY (0)
+#define BINARY_MODE(fd) /* nothing */
 #endif
 
+/* Process files in argv array, or stdin if *argv is null */
 int newsfv(char **argv)
 {
     int fd, rval = 0;
@@ -39,37 +44,51 @@ int newsfv(char **argv)
     uint32_t val;
     char *tmpname;
     struct stat st;
+    int is_stdin = 0;
 
-    pnsfv_head();
-    pfileinfo(argv);
+    if (NULL != *argv) {
+	pnsfv_head();
+	pfileinfo(argv);
+    }
 
-    while (*argv) {
+    do {
 	fn = *argv++;
-	if ((fd = open(fn, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
-	    if (!TOTALLY_QUIET)
-		fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
-	    rval = 1;
-	    continue;
+	
+	if (NULL == fn) {
+	    fd = STDIN_FILENO;
+	    BINARY_MODE(fd);
+	    fn = "stdin"; /* Just for error messages */
+	    is_stdin = 1;
+	} else {
+	    if ((fd = open(fn, O_RDONLY | O_LARGEFILE | O_BINARY, 0)) < 0) {
+		if (!TOTALLY_QUIET)
+		    fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
+		rval = 1;
+		continue;
+	    }
+	    if (fstat(fd, &st)) {
+		if (!TOTALLY_QUIET)
+		    fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn,
+			    strerror(errno));
+		rval = 1;
+		goto next;
+	    }
+	    if (S_ISDIR(st.st_mode)) {
+		if (!TOTALLY_QUIET)
+		    fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
+		rval = 1;
+		goto next;
+	    }
 	}
-	if (fstat(fd, &st)) {
-	    if (!TOTALLY_QUIET)
-		fprintf(stderr, "cksfv: can not fstat %s: %s\n", fn,
-			strerror(errno));
-	    rval = 1;
-	    goto next;
-	}
-	if (S_ISDIR(st.st_mode)) {
-	    if (!TOTALLY_QUIET)
-		fprintf(stderr, "cksfv: %s: Is a directory\n", fn);
-	    rval = 1;
-	    goto next;
-	}
+	
 	if (crc32(fd, &val)) {
 	    if (!TOTALLY_QUIET)
 		fprintf(stderr, "cksfv: %s: %s\n", fn, strerror(errno));
 	    rval = 1;
 	} else {
-	    if (use_basename) {
+	    if (is_stdin) {
+		pcrc(NULL, val);
+	    } else if (use_basename) {
 		if ((tmpname = strdup(fn)) == NULL) {
 		    if (!TOTALLY_QUIET)
 			fprintf(stderr, "out of memory\n");
@@ -82,8 +101,10 @@ int newsfv(char **argv)
 	    }
 	}
       next:
-	close(fd);
-    }
+	if (!is_stdin) {
+	    close(fd);
+	}
+    } while (!is_stdin && *argv);
 
     return rval;
 }

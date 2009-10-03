@@ -92,7 +92,10 @@ void pfileinfo(char **argv)
 
 void pcrc(char *fn, uint32_t val)
 {
-    printf("%s %.8X\n", fn, val);
+    if (NULL != fn) {
+	printf("%s ", fn);
+    }
+    printf("%.8X\n", val);
 }
 
 void prsfv_head(char *fn)

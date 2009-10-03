@@ -133,9 +133,6 @@ int main(int argc, char *argv[])
 	}
 
     } else {
-	if (argc < 1)
-	    pusage();
-
 	rval = newsfv(argv);
     }
 
